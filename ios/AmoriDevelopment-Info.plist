@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>RNCodeForClientReviewDev</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>auth0</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER).auth0</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>RNCodeForClientReview needs media access to scan the QR code to complete the iMessage upload</string>
+	<key>NSCameraUsageDescription</key>
+	<string>RNCodeForClientReview needs camera permission to scan the iMessages</string>
+	<key>NSContactsUsageDescription</key>
+	<string>RNCodeForClientReview needs contact permission to invite your friends</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>RNCodeForClientReview wants to access the location </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>RNCodeForClientReview needs photo library access to upload your whatsapp conversation</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>manrope-regular.otf</string>
+		<string>manrope-semibold.otf</string>
+		<string>manrope-bold.otf</string>
+		<string>Manrope-Bold.ttf</string>
+		<string>Manrope-ExtraBold.ttf</string>
+		<string>Manrope-ExtraLight.ttf</string>
+		<string>Manrope-Light.ttf</string>
+		<string>Manrope-Medium.ttf</string>
+		<string>Manrope-Regular.ttf</string>
+		<string>Manrope-SemiBold.ttf</string>
+		<string>FKRomanStandardTrial-Black.otf</string>
+		<string>FKRomanStandardTrial-Bold.otf</string>
+		<string>FKRomanStandardTrial-Light.otf</string>
+		<string>FKRomanStandardTrial-Medium.otf</string>
+		<string>FKRomanStandardTrial-Thin.otf</string>
+		<string>FKRomanStandardTrial-Regular.otf</string>
+		<string>Unbounded-Black.ttf</string>
+		<string>Unbounded-Bold.ttf</string>
+		<string>Unbounded-ExtraBold.ttf</string>
+		<string>Unbounded-ExtraLight.ttf</string>
+		<string>Unbounded-Light.ttf</string>
+		<string>Unbounded-Regular.ttf</string>
+		<string>Unbounded-Medium.ttf</string>
+		<string>Unbounded-SemiBold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

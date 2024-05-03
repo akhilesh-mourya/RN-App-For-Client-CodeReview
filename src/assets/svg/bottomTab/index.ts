@@ -1,0 +1,31 @@
+export const HOME_TAB_ICON_NON_FOCUSED = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.8026 28.6658V12.6887L15.878 3L4 12.7353V28.6658H27.8026ZM18.2064 28.6656V19.0234H13.5483V28.6656H18.2064Z" fill="#515151"/>
+</svg>
+`;
+
+export const HOME_TAB_ICON_FOCUSED = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.8026 28.3337V12.3567L15.878 2.66797L4 12.4033V28.3337H27.8026ZM18.2064 28.3335V18.6914H13.5483V28.3335H18.2064Z" fill="white"/>
+</svg>
+`;
+
+export const MATCHMAKING_TAB_NON_FOCUSED = `<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.2819 3.3877L32.8813 12.9871L16.8105 29.0579L0.749023 12.9965L10.3578 3.3877L16.8198 9.84974L23.2819 3.3877Z" fill="#515151"/>
+</svg>
+`;
+
+export const MATCHMAKING_TAB_FOCUSED = `<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.2819 3.05567L32.8813 12.6551L16.8105 28.7259L0.749023 12.6644L10.3578 3.05566L16.8198 9.51771L23.2819 3.05567Z" fill="white"/>
+</svg>
+`;
+
+export const PROFILE_TAB_NON_FOCUSED = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.9058 19.4249C26.5897 20.3458 29.1684 23.6613 29.1684 27.4372H2C2 23.6613 4.57869 20.3458 8.26254 19.4249C10.611 18.8262 13.0515 18.5039 15.5842 18.5039C18.1168 18.5039 20.5574 18.8262 22.9058 19.4249Z" fill="#515151"/>
+<path d="M15.5851 15.512C18.7641 15.512 21.3411 12.935 21.3411 9.75601C21.3411 6.57705 18.7641 4 15.5851 4C12.4062 4 9.8291 6.57705 9.8291 9.75601C9.8291 12.935 12.4062 15.512 15.5851 15.512Z" fill="#515151"/>
+</svg>
+`;
+
+export const PROFILE_TAB_FOCUSED = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.9058 19.0928C26.5897 20.0138 29.1684 23.3293 29.1684 27.1052H2C2 23.3293 4.57869 20.0138 8.26254 19.0928C10.611 18.4942 13.0515 18.1719 15.5842 18.1719C18.1168 18.1719 20.5574 18.4942 22.9058 19.0928Z" fill="white"/>
+<path d="M15.5851 15.18C18.7641 15.18 21.3411 12.6029 21.3411 9.42398C21.3411 6.24502 18.7641 3.66797 15.5851 3.66797C12.4062 3.66797 9.8291 6.24502 9.8291 9.42398C9.8291 12.6029 12.4062 15.18 15.5851 15.18Z" fill="white"/>
+</svg>
+`;

@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-swiper/index.d.ts b/node_modules/react-native-swiper/index.d.ts
+index 24905e3..237655f 100644
+--- a/node_modules/react-native-swiper/index.d.ts
++++ b/node_modules/react-native-swiper/index.d.ts
+@@ -138,6 +138,8 @@ declare module 'react-native-swiper' {
+     automaticallyAdjustContentInsets?: boolean
+     // Enables/Disables swiping
+     scrollEnabled?: boolean
++
++    onScroll?: any
+   }
+ 
+   export default class Swiper extends Component<SwiperProps> {
+diff --git a/node_modules/react-native-swiper/src/index.js b/node_modules/react-native-swiper/src/index.js
+index 3e63ca7..d146e9d 100644
+--- a/node_modules/react-native-swiper/src/index.js
++++ b/node_modules/react-native-swiper/src/index.js
+@@ -777,6 +777,8 @@ export default class extends Component {
+         onMomentumScrollEnd={this.onScrollEnd}
+         onScrollEndDrag={this.onScrollEndDrag}
+         style={this.props.scrollViewStyle}
++        onScroll={this.props.onScroll}
++        scrollEventThrottle={16}
+       >
+         {pages}
+       </ScrollView>

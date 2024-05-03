@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1065611440129",
+    "project_id": "RNCodeForClientReview-prod-1",
+    "storage_bucket": "RNCodeForClientReview-prod-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065611440129:android:00eda88f28f6d2d8e11000",
+        "android_client_info": {
+          "package_name": "com.RNCodeForClientReview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF6uHBlPifZ9CNvhheVyMHKvUVQIwgwHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065611440129:android:00eda88f28f6d2d8e11000",
+        "android_client_info": {
+          "package_name": "com.RNCodeForClientReview.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF6uHBlPifZ9CNvhheVyMHKvUVQIwgwHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

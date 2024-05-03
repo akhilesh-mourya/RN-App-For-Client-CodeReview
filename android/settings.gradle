@@ -1,0 +1,8 @@
+rootProject.name = 'RNCodeForClientReview'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':react-native-sms'
+project(':react-native-sms').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sms/android')
+include ':react-native-pusher-push-notifications'
+project(':react-native-pusher-push-notifications').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pusher-push-notifications/android')
+includeBuild('../node_modules/@react-native/gradle-plugin')
+include ':app'

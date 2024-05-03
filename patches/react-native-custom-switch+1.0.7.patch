@@ -1,0 +1,87 @@
+diff --git a/node_modules/react-native-custom-switch/src/customSwitch.js b/node_modules/react-native-custom-switch/src/customSwitch.js
+index c638fc1..8aa148e 100644
+--- a/node_modules/react-native-custom-switch/src/customSwitch.js
++++ b/node_modules/react-native-custom-switch/src/customSwitch.js
+@@ -1,7 +1,7 @@
+ import React, { useState, useEffect, useRef } from 'react';
+ import { View, StyleSheet, Text, TouchableWithoutFeedback, Animated, LayoutAnimation, Platform, UIManager } from 'react-native';
+ 
+-import hexToRgb from './hexToRgb';
++import hexToRgb from './utils';
+ 
+ if (Platform.OS === 'android') {
+   if (UIManager.setLayoutAnimationEnabledExperimental) {
+@@ -36,7 +36,7 @@ export default function CustomSwitch({
+ }) {
+   
+   const [ toggleRight, setToggleRight ] = useState(startOnLeft === true ? true : false);
+-
++  console.log("Switch ", switchBackgroundColor, onSwitchBackgroundColor, startOnLeft);
+   const colorAnim = useRef(new Animated.Value(0)).current;
+   const colorAnimInterpolation = onSwitchBackgroundColor && useRef(colorAnim.interpolate({
+     inputRange: [0, 1],
+@@ -48,19 +48,20 @@ export default function CustomSwitch({
+ 
+ 
+   const layoutAnim = {
+-    Opacity: () => (
+-      LayoutAnimation.configureNext(
+-        LayoutAnimation.create(
+-          animationSpeed ? animationSpeed : defaultValues.animationSpeed, 
+-          LayoutAnimation.Types.Spring,
+-          LayoutAnimation.Properties.opacity
+-        )
+-      )
+-    )
++    // Opacity: () => (
++    //   LayoutAnimation.configureNext(
++    //     LayoutAnimation.create(
++    //       animationSpeed ? animationSpeed : defaultValues.animationSpeed, 
++    //       LayoutAnimation.Types.Spring,
++    //       LayoutAnimation.Properties.opacity
++    //     )
++    //   )
++    // )
+   }
+ 
+   const changeToggle = () => {
+     setToggleRight(!toggleRight);
++    onSwitch(!toggleRight);
+   }
+ 
+   const changeColor = () => {
+@@ -84,15 +85,17 @@ export default function CustomSwitch({
+   }
+ 
+   useEffect(() => {
+-    if (toggleRight && onSwitch) {
+-      onSwitch();
+-    } else if (!toggleRight && onSwitchReverse) {
+-      onSwitchReverse()
+-    }
++    // if (toggleRight && onSwitch) {
++    //  // onSwitch();
++    // } else if (!toggleRight && onSwitchReverse) {
++    //  // onSwitchReverse()
++    // }
+     if (onSwitchBackgroundColor) {
+       changeColor();
+     }
+-  },[toggleRight])
++    console.log("===>", startOnLeft);
++    setToggleRight(startOnLeft)
++  },[startOnLeft])
+ 
+   const defaultValues = {
+     button: {
+@@ -180,8 +183,8 @@ export default function CustomSwitch({
+   return (
+     <TouchableWithoutFeedback onPress={() => {
+       !disabled ? (
+-        changeToggle(),
+-        layoutAnim.Opacity()
++        changeToggle()
++        //layoutAnim.Opacity()
+        ) : null
+     }}>
+       <Animated.View style={toggleStyle}>
