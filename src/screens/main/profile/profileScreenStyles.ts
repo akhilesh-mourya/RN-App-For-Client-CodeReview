@@ -13,7 +13,7 @@ import {FontFamily} from 'custom_enums';
 import LinearGradient from 'react-native-linear-gradient';
 import {SvgXml} from 'react-native-svg';
 import {
-  RNCodeForClientReview_PRO_SVG_ICON,
+  AMORI_PRO_SVG_ICON,
   LOGOUT_ICON,
   MESSAGE_ICON,
   PROFILE_DEFAULT_ICON,
@@ -99,7 +99,7 @@ export const RowView = styled.View.attrs(() => ({}))`
   padding-bottom: ${scale(40)}px;
 `;
 
-export const RNCodeForClientReviewProContainer: any = styled(LinearGradient).attrs(props => ({
+export const AmoriProContainer: any = styled(LinearGradient).attrs(props => ({
   colors: [props.theme.colors.primary, props.theme.colors.primary_20],
   useAngle: true,
   angle: 160,
@@ -124,15 +124,15 @@ export const RNCodeForClientReviewProContainer: any = styled(LinearGradient).att
   ${border}
 `;
 
-export const RNCodeForClientReviewProIcon = styled(SvgXml).attrs(() => ({
-  xml: RNCodeForClientReview_PRO_SVG_ICON,
+export const AmoriProIcon = styled(SvgXml).attrs(() => ({
+  xml: AMORI_PRO_SVG_ICON,
 }))``;
 
-export const RNCodeForClientReviewProSubContainer = styled.View.attrs<ViewPropsType>(() => ({
+export const AmoriProSubContainer = styled.View.attrs<ViewPropsType>(() => ({
   marginLeft: scale(16),
 }))``;
 
-export const RNCodeForClientReviewProLabel = styled.Text.attrs<TextPropsType>(props => ({
+export const AmoriProLabel = styled.Text.attrs<TextPropsType>(props => ({
   color: props.theme.colors.white,
 }))`
   font-family: ${FontFamily.ExtraBold};
@@ -144,7 +144,7 @@ export const RNCodeForClientReviewProLabel = styled.Text.attrs<TextPropsType>(pr
   ${space}
 `;
 
-export const RNCodeForClientReviewProSubTitle = styled.Text.attrs<TextPropsType>(props => ({
+export const AmoriProSubTitle = styled.Text.attrs<TextPropsType>(props => ({
   color: props.theme.colors.white,
 }))`
   font-family: ${FontFamily.Regular};

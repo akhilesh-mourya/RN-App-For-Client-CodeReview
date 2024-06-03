@@ -1,5 +1,5 @@
 /**
- * RNCodeForClientReview - Custom Input
+ * Amori - Custom Input
  */
 import React, {useEffect, useState} from 'react';
 import {InputContainer, InputView, ErrorLabel, InputViewNew} from './styles';

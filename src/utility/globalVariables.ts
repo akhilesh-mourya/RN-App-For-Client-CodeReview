@@ -1,5 +1,5 @@
 /**
- * RNCodeForClientReview Global Variables
+ * Amori Global Variables
  */
 
 global.dbLocalRef = null;

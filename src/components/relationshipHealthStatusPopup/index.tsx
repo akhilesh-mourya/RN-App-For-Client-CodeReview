@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {
   BottomView,
   CaptureShotView,
@@ -11,7 +11,7 @@ import {
 import {useRelationshipStatus} from '../../hooks/relationshipStatus/useRelationshipStatus';
 import {HealthStatus} from '../../enums';
 import AMPrimaryButton from '../button/AMPrimaryButton';
-import {MixpanelData, PrimaryButtonType} from '../../constants/enums';
+import {PrimaryButtonType} from '../../constants/enums';
 import {StatusStepOne} from './statusStepOne';
 import {StatusStepTwo} from './statusStepTwo';
 import {StatusStepThree} from './statusStepThree';
@@ -191,13 +191,10 @@ export const RelationshipStatusModal: FC<ModalProps> = React.memo(props => {
       <BottomView>
         <AMPrimaryButton
           label="Share"
-          labelSize={14}
-          height={31}
           leftIcon={<ShareIcon />}
           isDisabled={false}
           buttonType={PrimaryButtonType.ContentWidthButton}
           horizontalPadding={16}
-          labelLineHeight={19.46}
           bgColor={theme.colors.youLabelColor}
           onPress={captureScreen}
         />

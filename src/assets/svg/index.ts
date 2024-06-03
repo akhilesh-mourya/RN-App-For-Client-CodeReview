@@ -80,7 +80,7 @@ export const HOME_NEXT_ARROW_NEW = `<svg width="32" height="32" viewBox="0 0 32 
 </svg>
 `;
 
-export const RNCodeForClientReview_LOGO_BIG = `<svg width="121" height="120" viewBox="0 0 121 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const AMORI_LOGO_BIG = `<svg width="121" height="120" viewBox="0 0 121 120" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1441_29372)">
 <path d="M0.5 41.7391C0.5 27.1291 0.5 19.824 3.34331 14.2437C5.84435 9.33515 9.83515 5.34435 14.7437 2.84331C20.324 0 27.6291 0 42.2391 0H78.7609C93.3709 0 100.676 0 106.256 2.84331C111.165 5.34435 115.156 9.33515 117.657 14.2437C120.5 19.824 120.5 27.1291 120.5 41.7391V78.2609C120.5 92.8709 120.5 100.176 117.657 105.756C115.156 110.665 111.165 114.656 106.256 117.157C100.676 120 93.3709 120 78.7609 120H42.2391C27.6291 120 20.324 120 14.7437 117.157C9.83515 114.656 5.84435 110.665 3.34331 105.756C0.5 100.176 0.5 92.8709 0.5 78.2609V41.7391Z" fill="#2C1E31"/>
 <g opacity="0.5">
@@ -146,7 +146,7 @@ export const SYNC_ICON = `<svg width="13" height="12" viewBox="0 0 13 12" fill="
 </svg>
 `;
 
-export const RNCodeForClientReview_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="108" viewBox="0 0 96 108" fill="none">
+export const AMORI_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="108" viewBox="0 0 96 108" fill="none">
 <path d="M10.6667 15.5664H0.000488281V60.2954H10.6667V15.5664Z" fill="url(#paint0_linear_229_5055)"/>
 <path d="M21.3344 0.742188H10.6675V75.5838H21.3344V0.742188Z" fill="url(#paint1_linear_229_5055)"/>
 <path d="M31.9999 0.742188H21.333V85.978H31.9999V0.742188Z" fill="url(#paint2_linear_229_5055)"/>

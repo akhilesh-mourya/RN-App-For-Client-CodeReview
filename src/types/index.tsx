@@ -4,8 +4,10 @@ import type {
 } from '@react-navigation/native-stack';
 import {SCREEN_NAME} from '../enums';
 import {RelationshipReqData} from '../../@types/common';
+import {CoachDataProps} from '../constants/mockData';
 
 export type RootStackParamList = {
+  MainScreen: undefined;
   Onboarding: undefined;
   InputPhoneNumberScreen: undefined;
   VerifyOtpScreen: {phoneNumber: string};
@@ -14,12 +16,19 @@ export type RootStackParamList = {
   EnableNotificationScreen: {phoneNumber: string};
   HomeScreen: undefined;
   ChatScreen: {
-    receiverData: ChatReceiverDataType;
-    channelData: ChannelDataType;
+    receiverData?: ChatReceiverDataType;
+    channelData?: ChannelDataType;
+    result?: any;
+    sectionListData?: any;
+    isIMessageUploadType?: any;
+    relationShipData?: any;
   };
-  FillQuestionnaireScreen: {
-    messageItem: any;
-  };
+  FillQuestionnaireScreen:
+    | {
+        messageItem?: any;
+        onFillQuitionnaireDoneFromMsg?: any;
+      }
+    | undefined;
   MatchMakingScreen: undefined;
   WaitlistFormScreen: undefined;
   MatchMakingSuccessScreen: undefined;
@@ -32,17 +41,33 @@ export type RootStackParamList = {
   };
   MatchMakingLiveScreen: undefined;
   MatchMakingMatchesScreen: undefined;
-  WhatsAppTutorialScreen: undefined;
+  WhatsAppTutorialScreen: {
+    isForSync: boolean;
+  };
   IMessageTutorialScreen: undefined;
-  UserSelectorScreen: undefined;
+  UserSelectorScreen: {
+    updateStep?: Function;
+    removeRelationhipId?: Function;
+    updateOptionForStep?: Function;
+    senders?: Array<string>;
+    selectedOptionForUserSelection?: number;
+    isButtonEnabled?: boolean;
+    isNamesDiff?: boolean;
+    isFromWhatsAppUpload: boolean;
+    isUpdateFlow?: boolean;
+    updateExistingRelationship?: Function;
+    isFromUpdateAndDiffConv?: boolean;
+  };
   FillWhatappQuestionnaireScreen: {
     isFromWhatsAppUpload: boolean;
   };
   ChooseAnalysisScreen: {
-    createRelationReqData: RelationshipReqData;
-    isUpdateRelationship: boolean;
+    createRelationReqData?: RelationshipReqData;
+    isUpdateRelationship?: boolean;
     relationshipId?: string;
     relationShipData?: any;
+    isFromAnalysis?: boolean;
+    analysisListData?: any;
   };
   DeleteAccountReasonScreen: undefined;
   DeleteAccountSuccessScreen: undefined;
@@ -59,7 +84,9 @@ export type RootStackParamList = {
   MyRelationshipProfileScreen: undefined;
   MyBasicsScreen: undefined;
   RelationshipProfileScreen: {
-    relationshipData: any;
+    relationShipData?: any;
+    updateReceiverDataIfEdited?: any;
+    receiverData?: ChatReceiverDataType | CoachDataProps | null | undefined;
   };
   EditRelationshipNameScreen: {
     relationshipData: any;
@@ -77,9 +104,23 @@ export type HomeStackParamList = {
     channelData: ChannelDataType;
   };
   EnableNotificationScreen: {phoneNumber: string};
-  WhatsAppTutorialScreen: undefined;
+  WhatsAppTutorialScreen: {
+    isForSync?: boolean;
+  };
   IMessageTutorialScreen: undefined;
-  UserSelectorScreen: undefined;
+  UserSelectorScreen: {
+    updateStep?: Function;
+    removeRelationhipId?: Function;
+    updateOptionForStep?: Function;
+    senders?: Array<string>;
+    selectedOptionForUserSelection?: number;
+    isButtonEnabled?: boolean;
+    isNamesDiff?: boolean;
+    isFromWhatsAppUpload: boolean;
+    isUpdateFlow?: boolean;
+    updateExistingRelationship?: Function;
+    isFromUpdateAndDiffConv?: boolean;
+  };
   FillWhatappQuestionnaireScreen: undefined;
   ChooseAnalysisScreen: undefined;
 };
@@ -99,6 +140,21 @@ export type VerifyOTPScreenProps = NativeStackScreenProps<
   SCREEN_NAME.VerifyOtpScreen
 >;
 
+export type FillQuestionnaireScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  SCREEN_NAME.FillQuestionnaireScreen
+>;
+
+export type WhatsAppTutorialScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  SCREEN_NAME.WhatsAppTutorialScreen
+>;
+
+export type RelationshipProfileScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  SCREEN_NAME.RelationshipProfileScreen
+>;
+
 export type SelectPersonalityScreenProps = NativeStackScreenProps<
   RootStackParamList,
   SCREEN_NAME.SelectPersonalityScreen
@@ -108,6 +164,12 @@ export type ChatScreenScreenProps = NativeStackScreenProps<
   RootStackParamList,
   SCREEN_NAME.ChatScreen
 >;
+
+export type UserSelectorScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  SCREEN_NAME.UserSelectorScreen
+>;
+
 export type ChooseAnalysisScreenProps = NativeStackScreenProps<
   RootStackParamList,
   SCREEN_NAME.ChooseAnalysisScreen
@@ -135,19 +197,20 @@ export type DeleteUserProps = NativeStackScreenProps<
 >;
 
 export type ChatReceiverDataType = {
-  avatarUrl: string;
-  description: string;
-  id: number;
-  intro: string;
-  name: string;
-  title: string;
-  type: string;
-  about: string;
+  avatarUrl?: string;
+  description?: string;
+  id?: string;
+  intro?: string;
+  name?: string;
+  title?: string;
+  type?: any;
+  about?: any;
+  subject?: string;
 };
 
 export type ChannelDataType = {
   createdAt: string;
-  id: number;
+  id: string;
   type: string;
   latestMessage?: ChatMessagesType;
 };
@@ -196,6 +259,7 @@ export type ChatMessagesType = {
   senderType: string;
   process?: MessageProcessType;
   attachments?: Array<MessageAttachmentsType>;
+  readers?: any;
 };
 
 export type MessagesListType = Array<ChatMessagesType>;

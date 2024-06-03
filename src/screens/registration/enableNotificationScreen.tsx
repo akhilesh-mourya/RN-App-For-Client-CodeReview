@@ -41,7 +41,6 @@ const EnableNotificationScreen: FC<{}> = () => {
           label={t('Enable_Notifications')}
           onPress={onEnablePress}
           isDisabled={false}
-          height={55}
         />
       </ButtonContainerView>
     </DarkBackgroundContainer>

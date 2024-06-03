@@ -33,7 +33,6 @@ interface ScreenProps {
   snippetFooter: string;
   onHide: any;
   messageList: any;
-  captureScreen: any;
   subject: string;
   redirectToNextStep: Function;
 }

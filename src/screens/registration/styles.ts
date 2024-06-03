@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import {
-  RNCodeForClientReview_LOGO,
+  AMORI_LOGO,
   ENABLE_NOTIFICATION,
   ONBOARDING_GRADIENT_BACKGROUND,
 } from '../../constants/imageConstants';
@@ -17,7 +17,7 @@ import {SvgXml} from 'react-native-svg';
 import CountryPicker from 'react-native-country-picker-modal';
 import {CodeField} from 'react-native-confirmation-code-field';
 import {
-  RNCodeForClientReview_LOGO_SVG,
+  AMORI_LOGO_SVG,
   BUTTON_NEXT_ARROW_ACTIVE,
   BUTTON_NEXT_ARROW_DISABLED,
   DROPDOWN_ARROW_DOWN,
@@ -540,16 +540,16 @@ export const WaitlistSubContainer = styled.View.attrs<any>(() => ({}))`
   margin-horizontal: ${scale(24)}px;
 `;
 
-export const RNCodeForClientReviewLogo = styled.Image.attrs<any>(() => ({
-  source: RNCodeForClientReview_LOGO,
+export const AmoriLogo = styled.Image.attrs<any>(() => ({
+  source: AMORI_LOGO,
   resizeMode: 'stretch',
 }))`
   ${layout}
   ${space}
 `;
 
-export const RNCodeForClientReviewSVGLogo = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+export const AmoriSVGLogo = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
+  xml: AMORI_LOGO_SVG,
   marginTop: verticalScale(StatusBarManager.HEIGHT + 92),
 }))`
   align-self: center;

@@ -15,7 +15,7 @@ export class Analytics {
   initialize() {
     this.mixpanel.init();
     this.mixpanel.setLoggingEnabled(true);
-    LogRocket.init('RNCodeForClientReview/RNCodeForClientReview');
+    LogRocket.init('amori/amori');
   }
 
   identify(id: string) {
@@ -75,8 +75,8 @@ export class Analytics {
     this.track(Event.ViewYourAiDatingCopilotIntroScreen);
   }
 
-  trackViewRNCodeForClientReviewLearnsFromChatIntroScreen() {
-    this.track(Event.ViewRNCodeForClientReviewLearnsFromChatIntroScreen);
+  trackViewAmoriLearnsFromChatIntroScreen() {
+    this.track(Event.ViewAmoriLearnsFromChatIntroScreen);
   }
 
   trackViewWeCareAboutPrivacyIntroScreen() {

@@ -17,7 +17,7 @@ export const useOnboarding = () => {
         analytics.trackViewYourAiDatingCopilotIntroScreen();
         break;
       case 1:
-        analytics.trackViewRNCodeForClientReviewLearnsFromChatIntroScreen();
+        analytics.trackViewAmoriLearnsFromChatIntroScreen();
         break;
       case 2:
         analytics.trackViewWeCareAboutPrivacyIntroScreen();

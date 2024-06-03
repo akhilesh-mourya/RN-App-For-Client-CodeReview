@@ -62,6 +62,7 @@ const authContextInitialState = {
   setQuestionnaire: () => {},
   fetchAPIs: () => {},
   refreshAccessToken: () => {},
+  setMyCoachData: () => {},
   userData: null,
   authToken: null,
   registrationProgress: '',
@@ -91,7 +92,7 @@ export interface AuthContextProps {
   isRegistrationDone?: boolean;
   myCoachData?: CoachDataProps | null;
   questionnaire?: QuestionnaireProps | null;
-  setMyCoachData?: Function;
+  setMyCoachData: Function;
   setUploadedWhatsappId: Function;
   uploadedWhatsappId?: string | undefined | null;
   relationshipData?: Array<any>;
@@ -143,7 +144,7 @@ const AuthContextProvider: FC<AuthContextType> = ({children}) => {
   const pusher = usePusher();
   const analytics = useAnalytics();
   const notification = useNotification();
-  const [myCoachData, setMyCoachData] = useState<CoachDataProps | null>(
+  const [myCoachData, setMyCoach] = useState<CoachDataProps | null>(
     authContextInitialState?.userData,
   );
 
@@ -379,6 +380,10 @@ const AuthContextProvider: FC<AuthContextType> = ({children}) => {
 
   const updateUserData = (updatedUserInfo: UserDataType) => {
     setUserData(updatedUserInfo);
+  };
+
+  const setMyCoachData = (updatedUserInfo: CoachDataProps) => {
+    setMyCoach(updatedUserInfo);
   };
 
   const setAuthTokenInKeychain = async (callingNum: string, token: string) => {

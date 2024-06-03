@@ -4,8 +4,8 @@ const IntroScreenEvent = {
     name: 'view your ai dating copilot intro screen',
   },
   // done
-  ViewRNCodeForClientReviewLearnsFromChatIntroScreen: {
-    name: 'view RNCodeForClientReview learns from chat intro screen',
+  ViewAmoriLearnsFromChatIntroScreen: {
+    name: 'view amori learns from chat intro screen',
   },
   // done
   ViewWeCareAboutPrivacyIntroScreen: {

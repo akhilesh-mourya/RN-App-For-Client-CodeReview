@@ -1,5 +1,5 @@
 /**
- * RNCodeForClientReview Api services for @Registration flow
+ * Amori Api services for @Registration flow
  */
 import {Config} from 'react-native-config';
 import {

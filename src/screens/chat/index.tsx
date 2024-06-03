@@ -6,6 +6,11 @@ import {
   MainContainer,
   SafeAreaContainer,
   SectionListView,
+  SkeletonPlaceholderItemContainer,
+  SkeletonPlaceholderItemImage,
+  SkeletonPlaceholderItemRowContainer,
+  SkeletonPlaceholderItemView,
+  SkeletonPlaceholderView,
   SubContainer,
 } from './styles';
 import MessageItem from '../../components/molecule/chatScreenComponent/messageItem';
@@ -15,8 +20,6 @@ import {MessageSectionItemProps} from '../../enums';
 import {useChatMessages} from '../../hooks/chat/useChatMessages';
 import UploadConversationBottomSheet from '../../components/bottomSheet/uploadConversationBottomSheet';
 import {ChatScreenScreenProps} from '../../types';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {useTheme} from 'styled-components';
 import {MessageContentType} from '../../constants/enums';
 import {getMessageDisable} from '../../utility/chatUtility';
 import UpdateRelationshipConversationBottomSheet from '../../components/bottomSheet/updateRelationshipConversationBottomSheet';
@@ -33,7 +36,6 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
     onIMessagePress,
     onNewAnalysisPress,
     sendMessage,
-    listViewRef,
     messagesRawData,
     showSkeletonAnim,
     updateRelationbottomSheetRef,
@@ -50,7 +52,6 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
     selectedExpandedAttachmentRef,
     isKeyboardAvoidingViewEnabled,
   } = useChatMessages(screenProps);
-  const theme = useTheme();
 
   const renderMessageItem = ({item, index}: MessageSectionItemProps) => {
     return (
@@ -96,7 +97,7 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
         isVisible={isAttachmentStyleVisible}
         onHide={showHideAttachmentStyle}
         analysisData={analysisData}
-        subject={receiverData?.subject}
+        subject={receiverData?.subject || ''}
         expandedAttachmentRef={selectedExpandedAttachmentRef}
       />
     );
@@ -108,7 +109,7 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
         isVisible={isRelationshipHealthStatusVaisible}
         onHide={showHideHealthStatus}
         analysisData={analysisData}
-        subject={receiverData?.subject}
+        subject={receiverData?.subject || ''}
         expandedAttachmentRef={selectedExpandedAttachmentRef}
       />
     );
@@ -122,7 +123,6 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
           <SubContainer>
             {restructureMessage && restructureMessage.length > 0 ? (
               <SectionListView
-                ref={listViewRef}
                 sections={restructureMessage}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -135,29 +135,14 @@ const ChatScreen: FC<ChatScreenScreenProps> = screenProps => {
               />
             ) : showSkeletonAnim ? (
               <Block>
-                <SkeletonPlaceholder
-                  backgroundColor={theme.colors.base_90}
-                  borderRadius={10}>
-                  <SkeletonPlaceholder.Item marginTop={20}>
-                    <SkeletonPlaceholder.Item
-                      flexDirection="row"
-                      alignItems="center">
-                      <SkeletonPlaceholder.Item
-                        width={40}
-                        height={40}
-                        borderRadius={20}
-                        alignSelf="flex-end"
-                      />
-                      <SkeletonPlaceholder.Item
-                        width={'80%'}
-                        height={175}
-                        marginLeft={10}
-                        marginRight={4}
-                        borderRadius={10}
-                      />
-                    </SkeletonPlaceholder.Item>
-                  </SkeletonPlaceholder.Item>
-                </SkeletonPlaceholder>
+                <SkeletonPlaceholderView>
+                  <SkeletonPlaceholderItemContainer>
+                    <SkeletonPlaceholderItemRowContainer>
+                      <SkeletonPlaceholderItemImage />
+                      <SkeletonPlaceholderItemView />
+                    </SkeletonPlaceholderItemRowContainer>
+                  </SkeletonPlaceholderItemContainer>
+                </SkeletonPlaceholderView>
               </Block>
             ) : (
               <Block />

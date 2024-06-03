@@ -16,8 +16,11 @@ import {DarkBackgroundContainer} from '../../../components/screenBackground/Grad
 import {useTranslation} from 'react-i18next';
 import AMHeaderArrowBackButton from '../../../components/button/AMHeaderArrowBackButton';
 import {useWhatsAppTutorial} from '../../../hooks/upload/useWhatsAppTutorial';
+import {WhatsAppTutorialScreenProps} from '../../../types';
 
-const WhatsAppTutorialScreen: FC<{}> = (props: any) => {
+const WhatsAppTutorialScreen: FC<WhatsAppTutorialScreenProps> = (
+  props: any,
+) => {
   const {t} = useTranslation();
   const {isForSync} = props?.route?.params || {};
   const {onUploadPress, stepsArray} = useWhatsAppTutorial();

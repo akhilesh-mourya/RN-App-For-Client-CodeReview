@@ -1,5 +1,5 @@
 /***
-RNCodeForClientReview - NAVIGATION STACK CLASS
+Amori - NAVIGATION STACK CLASS
 ***/
 
 import React, {FC, useEffect, useState} from 'react';
@@ -29,7 +29,6 @@ import SettingScreen from '../screens/settings';
 import PushNotificationScreen from '../screens/settings/PushNotifications';
 import DeleteAccountConfirmScreen from '../screens/deleteAccount/deleteAccountConfirmScreen';
 import WhatsAppTutorialScreen from '../screens/chat/uploadConversation/whatsappTutorialScreen';
-import UserSelectorScreen from '../screens/chat/uploadConversation/fillWhatsappQuestionnaire/subComponents/userSelectorScreen';
 import FillWhatappQuestionnaireScreen from '../screens/chat/uploadConversation/fillWhatsappQuestionnaire';
 import ChooseAnalysisScreen from '../screens/chat/uploadConversation/fillWhatsappQuestionnaire/chooseAnalysis';
 import DeleteAccountReasonScreen from '../screens/deleteAccount';
@@ -54,7 +53,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigator: FC<{}> = () => {
   const [enableScreenAnimation, setEnableScreenAnimation] = useState(false);
   const {authContextData} = useAuth();
-  const [currentScreen, setCurrentScreen] = useState('');
 
   const onNavigationReady = () => {
     let routes = [{name: SCREEN_NAME.Onboarding}];
@@ -114,11 +112,6 @@ const StackNavigator: FC<{}> = () => {
   };
 
   useEffect(() => {
-    authContextData.registrationProgress &&
-      setCurrentScreen(getScreenToRedirect());
-  }, [authContextData.registrationProgress]);
-
-  useEffect(() => {
     LogBox.ignoreLogs(['Warning: ...']);
     LogBox.ignoreAllLogs();
     setTimeout(() => {
@@ -135,284 +128,255 @@ const StackNavigator: FC<{}> = () => {
     },
   };
 
-  const getScreenToRedirect = () => {
-    // Handle redirection to onboarding or home
-    switch (authContextData.registrationProgress) {
-      case 'DONE':
-        return SCREEN_NAME.MainScreen;
-      case 'ONBOARDING':
-        return SCREEN_NAME.Onboarding;
-      case 'OTP_VERIFICATION':
-        return SCREEN_NAME.InputPhoneNumberScreen;
-      case 'FIRST_NAME':
-        return SCREEN_NAME.InputNameScreen;
-      case 'CREATE_USER':
-        return SCREEN_NAME.SelectPersonalityScreen;
-      case 'ENABLE_NOTIFICATION':
-        return SCREEN_NAME.EnableNotificationScreen;
-      case 'WAITLIST_SCREEN':
-        return SCREEN_NAME.WaitlistScreen;
-      default:
-        return '';
-    }
-  };
-
-  if (currentScreen) {
-    return (
-      <NavigationContainer ref={navigationRef} onReady={onNavigationReady}>
-        <Stack.Navigator
-          initialRouteName={currentScreen}
-          screenOptions={{
+  return (
+    <NavigationContainer ref={navigationRef} onReady={onNavigationReady}>
+      <Stack.Navigator
+        initialRouteName={SCREEN_NAME.Onboarding}
+        screenOptions={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          gestureEnabled: false,
+          animationEnabled: enableScreenAnimation,
+        }}>
+        <Stack.Screen
+          name={SCREEN_NAME.Onboarding}
+          component={OnboardingScreen}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.InputPhoneNumberScreen}
+          component={InputPhoneNumberScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.VerifyOtpScreen}
+          component={VerifyOtpScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.InputNameScreen}
+          component={InputNameScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.SelectPersonalityScreen}
+          component={SelectPersonalityScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.MainScreen}
+          component={BottomTabsNavigation}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.ChatScreen}
+          component={ChatScreen}
+          options={{
+            cardStyleInterpolator: ({current, layouts}) => {
+              if (authContextData.registrationProgress !== 'DONE') {
+                return {
+                  cardStyle: {
+                    opacity: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  },
+                };
+              } else {
+                return {
+                  cardStyle: {
+                    transform: [
+                      {
+                        translateX: current.progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [layouts.screen.width, 0],
+                        }),
+                      },
+                    ],
+                  },
+                };
+              }
+            },
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.EnableNotificationScreen}
+          component={EnableNotificationScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.WaitlistScreen}
+          component={WaitlistScreen}
+          options={{
             headerShown: false,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureEnabled: false,
-            animationEnabled: enableScreenAnimation,
-          }}>
-          <Stack.Screen
-            name={SCREEN_NAME.Onboarding}
-            component={OnboardingScreen}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.InputPhoneNumberScreen}
-            component={InputPhoneNumberScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.VerifyOtpScreen}
-            component={VerifyOtpScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.InputNameScreen}
-            component={InputNameScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.SelectPersonalityScreen}
-            component={SelectPersonalityScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.MainScreen}
-            component={BottomTabsNavigation}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.ChatScreen}
-            component={ChatScreen}
-            options={{
-              cardStyleInterpolator: ({current, layouts}) => {
-                if (authContextData.registrationProgress !== 'DONE') {
-                  return {
-                    cardStyle: {
-                      opacity: current.progress.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, 1],
-                      }),
-                    },
-                  };
-                } else {
-                  return {
-                    cardStyle: {
-                      transform: [
-                        {
-                          translateX: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.width, 0],
-                          }),
-                        },
-                      ],
-                    },
-                  };
-                }
-              },
-            }}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.EnableNotificationScreen}
-            component={EnableNotificationScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.WaitlistScreen}
-            component={WaitlistScreen}
-            options={{
-              headerShown: false,
-              cardStyleInterpolator: ({current, layouts}) => {
-                if (authContextData.registrationProgress !== 'DONE') {
-                  return {
-                    cardStyle: {
-                      transform: [
-                        {
-                          translateX: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.width, 0],
-                          }),
-                        },
-                      ],
-                    },
-                  };
-                } else {
-                  return {
-                    cardStyle: {
-                      transform: [
-                        {
-                          translateY: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.height, 0],
-                          }),
-                        },
-                      ],
-                    },
-                  };
-                }
-              },
-            }}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.FillQuestionnaireScreen}
-            component={FillQuestionnaireScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.WaitlistFormScreen}
-            component={WaitlistFormScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.SettingScreen}
-            component={SettingScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.PushNotificationScreen}
-            component={PushNotificationScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.SwitchCoachScreen}
-            component={SwitchCoachScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.DeleteAccountConfirmScreen}
-            component={DeleteAccountConfirmScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.WhatsAppTutorialScreen}
-            component={WhatsAppTutorialScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.IMessageTutorialScreen}
-            component={IMessageTutorialScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.iMessageNotSyncedModalScreen}
-            component={IMessageNotSyncedModalScreen}
-            options={{
-              ...onBoardingScreenOptions,
-              presentation: 'transparentModal',
-              cardStyleInterpolator:
-                CardStyleInterpolators.forFadeFromBottomAndroid,
-            }}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.IMessageSyncedModalScreen}
-            component={IMessageSyncedModalScreen}
-            options={{
-              ...onBoardingScreenOptions,
-              presentation: 'transparentModal',
-              cardStyleInterpolator:
-                CardStyleInterpolators.forFadeFromBottomAndroid,
-            }}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.IMessageSyncdSuccessScreen}
-            component={IMessageSyncdSuccessScreen}
-            options={{
-              ...onBoardingScreenOptions,
-              presentation: 'transparentModal',
-              cardStyleInterpolator:
-                CardStyleInterpolators.forFadeFromBottomAndroid,
-            }}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.FillIMessageQuestionnaireScreen}
-            component={FillIMessageQuestionnaireScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.MyRelationshipProfileScreen}
-            component={MyRelationshipProfileScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.MyBasicsScreen}
-            component={MyBasicsScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.UserSelectorScreen}
-            component={UserSelectorScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.FillWhatappQuestionnaireScreen}
-            component={FillWhatappQuestionnaireScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.ChooseAnalysisScreen}
-            component={ChooseAnalysisScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.DeleteAccountReasonScreen}
-            component={DeleteAccountReasonScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.DeleteAccountSuccessScreen}
-            component={DeleteAccountSuccessScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.WelcomeScreen}
-            component={WelcomeScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.RelationshipProfileScreen}
-            component={RelationshipProfileScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.EditRelationshipNameScreen}
-            component={EditRelationshipNameScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.FillWhatsAppQuitionnarireForAnalysisScreen}
-            component={FillWhatsAppQuitionnarireForAnalysisScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.IMessageSyncLoadingScreen}
-            component={IMessageSyncLoadingScreen}
-            options={onBoardingScreenOptions}
-          />
-          <Stack.Screen
-            name={SCREEN_NAME.WhatsappSyncdSuccessScreen}
-            component={WhatsappSyncdSuccessScreen}
-            options={onBoardingScreenOptions}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+            cardStyleInterpolator: ({current, layouts}) => {
+              if (authContextData.registrationProgress !== 'DONE') {
+                return {
+                  cardStyle: {
+                    transform: [
+                      {
+                        translateX: current.progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [layouts.screen.width, 0],
+                        }),
+                      },
+                    ],
+                  },
+                };
+              } else {
+                return {
+                  cardStyle: {
+                    transform: [
+                      {
+                        translateY: current.progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [layouts.screen.height, 0],
+                        }),
+                      },
+                    ],
+                  },
+                };
+              }
+            },
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.FillQuestionnaireScreen}
+          component={FillQuestionnaireScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.WaitlistFormScreen}
+          component={WaitlistFormScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.SettingScreen}
+          component={SettingScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.PushNotificationScreen}
+          component={PushNotificationScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.SwitchCoachScreen}
+          component={SwitchCoachScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.DeleteAccountConfirmScreen}
+          component={DeleteAccountConfirmScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.WhatsAppTutorialScreen}
+          component={WhatsAppTutorialScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.IMessageTutorialScreen}
+          component={IMessageTutorialScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.iMessageNotSyncedModalScreen}
+          component={IMessageNotSyncedModalScreen}
+          options={{
+            ...onBoardingScreenOptions,
+            presentation: 'transparentModal',
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.IMessageSyncedModalScreen}
+          component={IMessageSyncedModalScreen}
+          options={{
+            ...onBoardingScreenOptions,
+            presentation: 'transparentModal',
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.IMessageSyncdSuccessScreen}
+          component={IMessageSyncdSuccessScreen}
+          options={{
+            ...onBoardingScreenOptions,
+            presentation: 'transparentModal',
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.FillIMessageQuestionnaireScreen}
+          component={FillIMessageQuestionnaireScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.MyRelationshipProfileScreen}
+          component={MyRelationshipProfileScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.MyBasicsScreen}
+          component={MyBasicsScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.FillWhatappQuestionnaireScreen}
+          component={FillWhatappQuestionnaireScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.ChooseAnalysisScreen}
+          component={ChooseAnalysisScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.DeleteAccountReasonScreen}
+          component={DeleteAccountReasonScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.DeleteAccountSuccessScreen}
+          component={DeleteAccountSuccessScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.WelcomeScreen}
+          component={WelcomeScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.RelationshipProfileScreen}
+          component={RelationshipProfileScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.EditRelationshipNameScreen}
+          component={EditRelationshipNameScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.FillWhatsAppQuitionnarireForAnalysisScreen}
+          component={FillWhatsAppQuitionnarireForAnalysisScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.IMessageSyncLoadingScreen}
+          component={IMessageSyncLoadingScreen}
+          options={onBoardingScreenOptions}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.WhatsappSyncdSuccessScreen}
+          component={WhatsappSyncdSuccessScreen}
+          options={onBoardingScreenOptions}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default StackNavigator;

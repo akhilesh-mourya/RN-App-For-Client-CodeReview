@@ -441,13 +441,13 @@ export const getMacLinkShareOptions = (macLink: string) => {
             },
           },
           linkMetadata: {
-            title: 'RNCodeForClientReview',
+            title: 'Amori',
             icon: '',
           },
         },
       ],
       default: {
-        title: 'RNCodeForClientReview',
+        title: 'Amori',
         subject: macLink,
         message: `${macLink}`,
       },

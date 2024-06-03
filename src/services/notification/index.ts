@@ -99,7 +99,7 @@ class Notification {
     } catch (error) {}
   };
 
-  setRelationshipData(data: [RelationshipDataProps]) {
+  setRelationshipData(data: any[]) {
     this.relationshipData = data;
   }
 
@@ -136,7 +136,7 @@ class Notification {
     try {
       await notifee.displayNotification({
         id: '123',
-        title: 'RNCodeForClientReview',
+        title: 'Amori',
         body: notification?.userInfo?.aps?.alert?.body,
         data: {
           userInfo: notification?.userInfo,

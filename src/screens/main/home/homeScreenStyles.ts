@@ -11,10 +11,8 @@ import {
   TextPropsType,
 } from '../../../../@types/styledComponents';
 import AMButton from '../../../components/button/AMButton';
-import LinearGradient from 'react-native-linear-gradient';
-import {SvgXml} from 'react-native-svg';
+import {SvgProps, SvgXml} from 'react-native-svg';
 import {
-  HOME_NEXT_ARROW,
   HOME_NEXT_ARROW_NEW,
   UPLOAD_CONVERSATION_ARROW_ICON,
 } from '../../../assets/svg';
@@ -23,6 +21,9 @@ import AMPrimaryButton from '../../../components/button/AMPrimaryButton';
 import i18next from 'i18next';
 import {PrimaryButtonType} from '../../../constants/enums';
 import {Platform} from 'react-native';
+import {IStyledComponent} from 'styled-components';
+import {AdditionalProps, XmlProps} from 'react-native-svg/lib/typescript/xml';
+import {Substitute} from 'styled-components/dist/types';
 
 export const Container = styled.View.attrs<any>(() => ({
   showsVerticalScrollIndicator: false,
@@ -70,9 +71,9 @@ export const RelationShipContainer: any = styled(AMButton).attrs<any>(
   ${border}
 `;
 
-export const RelationShipInnerLeftContainer = styled.View.attrs<any>(() => ({
-  // mr: scale(45),
-}))`
+export const RelationShipInnerLeftContainer = styled.View.attrs<any>(
+  () => ({}),
+)`
   flex: 1;
   ${color}
   ${size}
@@ -197,7 +198,9 @@ export const UploadConversationTouchable = styled(AMButton).attrs<any>(
   ${border}
 `;
 
-export const UploadConversationIcon = styled(SvgXml).attrs(() => ({
+export const UploadConversationIcon: () => JSX.Element | null = styled(
+  SvgXml,
+).attrs(() => ({
   xml: UPLOAD_CONVERSATION_ARROW_ICON,
 }))``;
 
@@ -262,7 +265,6 @@ export const UploadConvBottomTouchable = styled(AMPrimaryButton).attrs<any>(
     mx: scale(54),
     height: verticalScale(44),
     labelSize: 16,
-    labelLineHeight: 19.2,
   }),
 )`
   ${color}

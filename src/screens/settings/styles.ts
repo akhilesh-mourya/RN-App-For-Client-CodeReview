@@ -18,7 +18,7 @@ import CustomSwitch from 'react-native-custom-switch';
 import Carousel from 'react-native-reanimated-carousel';
 import {IS_IOS_PLATFORM} from '../../constants/appContants';
 import AMButton from '../../components/button/AMButton';
-import {RNCodeForClientReview_LOGO_SVG} from '../../assets/svg';
+import {AMORI_LOGO_SVG} from '../../assets/svg';
 
 export const TitleLabel = styled.Text.attrs<TextPropsType>(props => ({
   color: props.theme.colors.white,
@@ -124,7 +124,7 @@ export const UnderlineTitle = styled.Text.attrs<TextPropsType>(props => ({
   ${padding}
 `;
 
-export const RNCodeForClientReviewTitle = styled.Text.attrs<TextPropsType>(props => ({
+export const AmoriTitle = styled.Text.attrs<TextPropsType>(props => ({
   color: props.theme.colors.white,
 }))`
   font-family: ${FontFamily.UnboundLight};
@@ -182,7 +182,7 @@ export const LogoRowContainer = styled.View.attrs<ViewPropsType>(() => ({
 }))``;
 
 export const StarIcon = styled(SvgXml).attrs<any>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+  xml: AMORI_LOGO_SVG,
   width: scale(32),
   height: scale(35.5),
 }))`
@@ -384,8 +384,8 @@ export const StayTouchable = styled(AMButton).attrs(() => ({}))`
   ${border}
 `;
 
-export const RNCodeForClientReviewLogo = styled(SvgXml).attrs<any>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+export const AmoriLogo = styled(SvgXml).attrs<any>(() => ({
+  xml: AMORI_LOGO_SVG,
   height: scale(87),
   width: scale(79),
   mt: verticalScale(109),

@@ -20,7 +20,7 @@ import {ChatMessagesType} from '../../../types';
 import {getMessageContentToShow} from '../../../utility/chatUtility';
 
 interface MyCoachItemProps {
-  item: AssistantDataType;
+  item: AssistantDataType | {};
   lastMessageDataForCoach: ChatMessagesType | null;
   onCoachPress: Function;
 }

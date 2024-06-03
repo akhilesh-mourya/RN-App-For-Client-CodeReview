@@ -31,7 +31,6 @@ interface ScreenProps {
   style: any;
   onHide: any;
   description: string;
-  captureScreen: any;
   redirectToNextStep: Function;
 }
 

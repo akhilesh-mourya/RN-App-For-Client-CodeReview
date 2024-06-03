@@ -580,7 +580,7 @@ export const configreChatMessagesForAnalysisData = (
 export const configureRelationshipsDataIfLastMessage = (
   relationshipsList: Array<any>,
   channelsList: Array<ChannelDataType>,
-  myUserId: string | number,
+  myUserId: string | number | undefined,
 ) => {
   if (channelsList?.length === 0) {
     return relationshipsList;
@@ -593,7 +593,7 @@ export const configureRelationshipsDataIfLastMessage = (
     if (foundChannel) {
       const isRead = foundChannel?.latestMessage
         ? foundChannel?.latestMessage?.readers?.some(
-            readData => readData?.userId == myUserId,
+            (readData: any) => readData?.userId === myUserId,
           )
         : false;
       return {
@@ -612,8 +612,8 @@ export const configureRelationshipsDataIfLastMessage = (
 };
 
 export const checkCoachLastMesageRead = (
-  channelData: ChannelDataType,
-  myUserId: string | number,
+  channelData: ChannelDataType | undefined,
+  myUserId: string | number | undefined,
 ) => {
   const isNotAssistantMsg =
     channelData?.latestMessage?.senderType !== 'assistant';
@@ -625,7 +625,7 @@ export const checkCoachLastMesageRead = (
   }
   const isRead = channelData?.latestMessage
     ? channelData?.latestMessage?.readers?.some(
-        readData => readData?.userId == myUserId,
+        (readData: any) => readData?.userId === myUserId,
       )
     : false;
   return {

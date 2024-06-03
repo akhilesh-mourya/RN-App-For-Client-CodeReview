@@ -1,8 +1,8 @@
 /**
- * @RNCodeForClientReview Mixpanel Constants
+ * @Amori Mixpanel Constants
  */
 export const ONBOARDING_STEP_ONE = 'view your ai dating copilot intro screen'; // Done
-export const ONBOARDING_STEP_TWO = 'view RNCodeForClientReview learns from chat intro screen'; // Done
+export const ONBOARDING_STEP_TWO = 'view amori learns from chat intro screen'; // Done
 export const ONBOARDING_STEP_THREE = 'view we care about privacy intro screen'; // Done
 export const ONBOARDING_GET_TOUCHED =
   'touch get started button on intro screen'; // Done

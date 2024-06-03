@@ -56,10 +56,10 @@ export const useChooseAnalysis = () => {
     showErrorMessage,
   } = useLoader();
   const {mutateAsync} = useMutation((requestBody: RelationshipReqData) =>
-    createRelationship(requestBody, getApiconfig),
+    createRelationship(requestBody),
   );
   const {mutateAsync: uploadChatCall} = useMutation((requestBody: any) =>
-    uploadWhatsappChat(requestBody, getApiconfig),
+    uploadWhatsappChat(requestBody),
   );
   const {mutateAsync: createAnalysys} = useMutation((requestBody: any) =>
     createAnalysysCall(requestBody),

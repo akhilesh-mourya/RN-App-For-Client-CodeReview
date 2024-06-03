@@ -9,7 +9,7 @@ import {
   WelcomeSubContainer,
   WelcomeTitle,
   WelcomeDes,
-  RNCodeForClientReviewLogo,
+  AmoriLogo,
   UnderlineTitle,
 } from './styles';
 import {DarkBackgroundContainer} from '../../components/screenBackground/GradientBackgroundContainer';
@@ -49,7 +49,7 @@ const WelcomeScreen: FC<{}> = React.memo(() => {
       <DarkBackgroundContainer>
         <WelcomeContainer>
           <WelcomeSubContainer>
-            <RNCodeForClientReviewLogo />
+            <AmoriLogo />
             <WelcomeTitle>{t('Welcome_Title')}</WelcomeTitle>
             <WelcomeDes>{t('Welcome_Des')}</WelcomeDes>
             {renderBottomContent()}

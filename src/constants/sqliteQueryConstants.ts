@@ -1,5 +1,5 @@
 /**
- * @RNCodeForClientReview All Sqlite queries goes here
+ * @Amori All Sqlite queries goes here
  */
 
 import {

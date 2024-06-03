@@ -169,7 +169,7 @@ export const useVerifyOtp = (otpValue: string, phoneNumber: string) => {
       .loginWithSMS({
         phoneNumber: phoneNumber,
         code: otpValue,
-        audience: 'RNCodeForClientReview.app',
+        audience: 'amori.app',
         scope: 'offline_access',
       })
       .then((res: any) => {

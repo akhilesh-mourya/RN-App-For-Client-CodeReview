@@ -5,7 +5,7 @@ import {
   scale,
   verticalScale,
 } from 'react-native-size-matters/extend';
-import {border, space, layout, color, size} from 'styled-system';
+import {border, space, layout, color, size, fontSize} from 'styled-system';
 import AMButton from './AMButton';
 import {FontFamily} from 'custom_enums';
 import {SvgXml} from 'react-native-svg';
@@ -13,6 +13,7 @@ import {
   BUTTON_NEXT_ARROW_ACTIVE,
   BUTTON_NEXT_ARROW_DISABLED,
 } from '../../assets/svg';
+import {Text} from 'react-native';
 
 export const BottomTouchable = styled(AMButton).attrs<any>(props => ({
   alignSelf: 'stretch',
@@ -88,14 +89,20 @@ export const BottomContentTouchable = styled(AMButton).attrs<any>(props => ({
   ${border}
 `;
 
-export const ButtonLabel = styled.Text.attrs<TextPropsType>(props => ({
+interface ButtonLabelProps extends TextPropsType {
+  isDisabled?: boolean;
+  labelSize?: number;
+  color?: string;
+}
+
+export const ButtonLabel = styled(Text).attrs<ButtonLabelProps>(props => ({
   color: props.isDisabled
     ? props.theme.colors.grey_disabled
     : props.theme.colors.white,
-}))`
+  fontSize: moderateScale(props?.labelSize || 20),
+}))<ButtonLabelProps>`
   font-family: ${FontFamily.Bold};
-  font-size: ${props => moderateScale(props?.labelSize || 20)}px;
-  line-height: ${props => props?.labelLineHeight || 27}px;
+  line-height: 20px;
   align-self: center;
   text-align: center;
   margin-left: 6px;
@@ -106,14 +113,14 @@ export const ButtonLabel = styled.Text.attrs<TextPropsType>(props => ({
     ${space}
 `;
 
-export const ButtonLabelNew = styled.Text.attrs<TextPropsType>(props => ({
+export const ButtonLabelNew = styled.Text.attrs<ButtonLabelProps>(props => ({
   color: props.isDisabled
     ? props.theme.colors.placeholder_new
     : props.theme.colors.white,
-}))`
+  fontSize: moderateScale(props?.labelSize || 20),
+}))<ButtonLabelProps>`
   font-family: ${FontFamily.Bold};
-  font-size: ${props => moderateScale(props?.labelSize || 20)}px;
-  line-height: ${props => props?.labelLineHeight || 27}px;
+  line-height: 20px;
   align-self: center;
   text-align: center;
   margin-left: 6px;
@@ -122,6 +129,7 @@ export const ButtonLabelNew = styled.Text.attrs<TextPropsType>(props => ({
   ${size}
     ${layout}
     ${space}
+    ${fontSize}
 `;
 
 export const ButtonNextArrowActive = styled(SvgXml).attrs<SVGXMLPropsType>(

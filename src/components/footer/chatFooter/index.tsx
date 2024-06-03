@@ -11,7 +11,7 @@ import React, {FC, useState} from 'react';
 
 interface FooterProps {
   isDisabled?: boolean;
-  sendMessage?: () => void;
+  sendMessage?: (msg: string) => void;
   onUploadConvPress?: () => void;
 }
 

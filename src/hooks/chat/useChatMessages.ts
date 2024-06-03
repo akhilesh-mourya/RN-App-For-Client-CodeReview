@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {useMutation, useQuery} from 'react-query';
 import {configureChatMessages, getFilteredCoachChannel} from '../../utility';
 import useGetApiHeaders from '../apiService/useGetApiHeaders';
@@ -23,7 +23,13 @@ import {
   UploadTypeEnum,
 } from '../../enums';
 import {MessageOptionPressEventType, MixpanelData} from '../../constants/enums';
-import {ChatMessagesType, ChatScreenScreenProps} from '../../types';
+import {
+  AnalysysItemType,
+  ChatMessagesType,
+  ChatReceiverDataType,
+  ChatScreenScreenProps,
+  NavigationProps,
+} from '../../types';
 import useChat from '../context/useChat';
 import {
   addMessagesDataInDB,
@@ -45,15 +51,20 @@ import {Platform} from 'react-native';
 import useRelationshipData from '../context/useRelationships';
 import {getAnalysisData, getAnalysisListData} from '../../apiServices/main';
 import {useAnalytics} from '../../services/analytics';
+import {CoachDataProps} from '../../constants/mockData';
 
 export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
   const {getApiconfig} = useGetApiHeaders();
   const {authContextData} = useAuth();
   const {chatContextData} = useChat();
   const {myRelationshipsList, personalitiesList} = useRelationshipData();
-  const [coachChannelData, setCoachChannelData] = useState();
+  const [coachChannelData, setCoachChannelData] = useState<
+    CoachDataProps | undefined
+  >();
   const [showSkeletonAnim, setShowSkeletonAnim] = useState(true);
-  const [analysisData, setAnalysisData] = useState(null);
+  const [analysisData, setAnalysisData] = useState<AnalysysItemType | null>(
+    null,
+  );
   const [analysisType, setAnalysisType] = useState('');
 
   const selectedExpandedAttachmentRef = useRef(undefined);
@@ -75,7 +86,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
 
   const bottomSheetRef = useRef<ActionSheetRef>(null);
   const updateRelationbottomSheetRef = useRef<ActionSheetRef>(null);
-  const {navigate, goBack, setParams} = useNavigation();
+  const {navigate, goBack, setParams} = useNavigation<NavigationProps>();
   const {
     receiverData = authContextData?.myCoachData,
     channelData,
@@ -84,10 +95,10 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     isIMessageUploadType = true,
     relationShipData = null,
   } = screenProps?.route?.params || {};
-  const listViewRef = useRef();
   const [messagesRawData, setMessagesRawData] = useState<any[]>(result);
-  const [restructureMessage, setRestructureMessageData] =
-    useState<any[]>(sectionListData);
+  const [restructureMessage, setRestructureMessageData] = useState<
+    any[] | undefined
+  >(sectionListData);
   const isFocused = useIsFocused();
   const analytics = useAnalytics();
 
@@ -165,70 +176,6 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     }
   }, [analysisDataFromApi?.data]);
 
-  const callReadMessageApi = (messagesList?: Array<ChatMessagesType>) => {
-    const messageId = getAssistantLastMessageId(
-      messagesList || messagesRawData,
-    );
-    if (messageId) {
-      markLastMessageRead(messageId);
-    }
-  };
-
-  const showHideAttachmentStyle = () => {
-    setIsKeyboardAvoidingViewEnabled(true);
-    setAttachmentStyleVisible(false);
-
-    if (relationShipData) {
-      analytics.trackViewRelationshipAssistantChannelScreen(
-        relationShipData.id,
-      );
-    }
-  };
-
-  const showHideHealthStatus = () => {
-    setIsKeyboardAvoidingViewEnabled(true);
-    setRelationshipHealthStatusVisible(false);
-
-    if (relationShipData) {
-      analytics.trackViewRelationshipAssistantChannelScreen(
-        relationShipData.id,
-      );
-    }
-  };
-
-  const storeData = async (messages: any) => {
-    const channelId = coachChannelData?.id || channelData?.id;
-    const localMsgData = await getLastMessagesOfChannelFromDB(channelId);
-    if (localMsgData?.length > 0) {
-      const matchesByDate = messages.filter(x => {
-        return (
-          new Date(x.createdAt).getTime() >
-          new Date(localMsgData[0]?.created_at).getTime()
-        );
-      });
-      matchesByDate.length > 0 &&
-        addMessagesDataInDB(matchesByDate.reverse(), channelId);
-    } else {
-      addMessagesDataInDB(messages.reverse(), channelId);
-    }
-
-    if (messages?.length > 0 && messages[0]?.process) {
-      await updateMessageProcessIntoDB({
-        ...messages[0]?.process,
-        message_id: messages[0]?.id,
-      });
-      getMsgsDataFromDb(channelId);
-    }
-
-    messages?.map(item => {
-      if (item?.question?.id === 'upload_conversation') {
-        updateChoicesMsgIntoDB({
-          message_id: item?.id,
-          ...item?.question?.choices[0],
-        });
-      }
-    });
-  };
   /**
    * Here, If ChannelId inside channelData provided then we use that otherwise we will fetch coachData(For first time redirection)
    */
@@ -241,7 +188,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
         ? channelData
         : getFilteredCoachChannel(chatContextData.channelsList);
       // Get messages data
-      getMsgsDataFromDb(_coachChannelData?.id);
+      getMsgsDataFromDb(_coachChannelData?.id || '');
       setCoachChannelData(_coachChannelData);
       refetch();
     }
@@ -268,7 +215,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
             break;
           case ChatType.AssistantGeneral:
             analytics.trackViewGeneralAssistantChannelScreen(
-              receiverData?.name.toLowerCase(),
+              receiverData?.name?.toLowerCase(),
             );
             break;
         }
@@ -281,6 +228,76 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
       chatContextData.setMessagesListContext([]);
     };
   }, []);
+
+  const callReadMessageApi = useCallback(
+    (messagesList?: Array<ChatMessagesType>) => {
+      const messageId = getAssistantLastMessageId(
+        messagesList || messagesRawData,
+      );
+      if (messageId) {
+        markLastMessageRead(messageId);
+      }
+    },
+    [],
+  );
+
+  const showHideAttachmentStyle = () => {
+    setIsKeyboardAvoidingViewEnabled(true);
+    setAttachmentStyleVisible(false);
+
+    if (relationShipData) {
+      analytics.trackViewRelationshipAssistantChannelScreen(
+        relationShipData.id,
+      );
+    }
+  };
+
+  const showHideHealthStatus = () => {
+    setIsKeyboardAvoidingViewEnabled(true);
+    setRelationshipHealthStatusVisible(false);
+
+    if (relationShipData) {
+      analytics.trackViewRelationshipAssistantChannelScreen(
+        relationShipData.id,
+      );
+    }
+  };
+
+  const storeData = async (messages: any) => {
+    const channelId = coachChannelData?.id || channelData?.id;
+    const localMsgData: any[] = await getLastMessagesOfChannelFromDB(
+      channelId || '',
+    );
+    if (localMsgData?.length > 0) {
+      const matchesByDate = messages.filter((x: any) => {
+        return (
+          new Date(x.createdAt).getTime() >
+          new Date(localMsgData[0]?.created_at).getTime()
+        );
+      });
+      matchesByDate.length > 0 &&
+        addMessagesDataInDB(matchesByDate.reverse(), channelId || '');
+    } else {
+      addMessagesDataInDB(messages.reverse(), channelId || '');
+    }
+
+    if (messages?.length > 0 && messages[0]?.process) {
+      await updateMessageProcessIntoDB({
+        ...messages[0]?.process,
+        message_id: messages[0]?.id,
+      });
+      getMsgsDataFromDb(channelId || '');
+    }
+
+    messages?.map((item: any) => {
+      if (item?.question?.id === 'upload_conversation') {
+        updateChoicesMsgIntoDB({
+          message_id: item?.id,
+          ...item?.question?.choices[0],
+        });
+      }
+    });
+  };
 
   /**
    * @getMsgsDataFromDb to get msgs list from BD
@@ -300,16 +317,14 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
       receiverData,
       personalitiesList || [],
     );
-    const sectionListData = getSectionMessages(updatedMessages);
-    setRestructureMessageData(sectionListData);
+    const _sectionListData = getSectionMessages(updatedMessages);
+    setRestructureMessageData(_sectionListData);
     setMessagesRawData(messagesListData);
-    const promiseArray = [];
+    const promiseArray: any = [];
 
     /**
      * Configuration for attachment type message
      */
-    // const haveAttchmentWithoutTypeMsg =
-    //   checkForAttachmentApiCall(messagesListData);
 
     messagesListData?.map(msg => {
       if (msg?.attachments?.length > 0 && !msg?.attachments[0]?.type) {
@@ -328,7 +343,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
       if (promiseArray.length > 0) {
         const finalResult = await Promise.all(promiseArray);
         const finalMessages = messagesListData?.map((message: any) => {
-          const newData = [];
+          const newData: any = [];
           finalResult.map(attachment => {
             if (message?.attachments?.length > 0) {
               if (attachment?.id === message?.attachments[0]?.content) {
@@ -350,8 +365,8 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
           receiverData,
         );
         updateAttchmentsTypeInDB(finalMessages); // To Update attchment type in DB Attchment table
-        const _sectionListData = getSectionMessages(_updatedMessages);
-        setRestructureMessageData(_sectionListData);
+        const _sectionListDataNew = getSectionMessages(_updatedMessages);
+        setRestructureMessageData(_sectionListDataNew);
         setMessagesRawData(finalMessages);
         chatContextData.setMessagesListContext(finalMessages);
       }
@@ -363,7 +378,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
   const onMessageOptionPressEvent = (type: string, item: any) => {
     switch (type) {
       case MessageOptionPressEventType.FillQuestionnaire:
-        onFillQuestionnairePress(item);
+        onFillQuestionnairePress();
         break;
       case MessageOptionPressEventType.MayBeLater:
         onMayBeLaterPress(item);
@@ -375,7 +390,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
         onUploadConvPress(false);
         break;
       case MessageOptionPressEventType.EditRelationship:
-        onEditRelationshipPress(item);
+        onEditRelationshipPress();
         break;
       case MessageOptionPressEventType.GoToRelationships:
         onGoToRelationhipPress();
@@ -421,7 +436,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     goBack();
   };
 
-  const onEditRelationshipPress = (item: any) => {
+  const onEditRelationshipPress = () => {
     const userData = authContextData?.userData;
     const updateQuestionnaire = {
       ...authContextData?.questionnaire,
@@ -437,7 +452,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
 
   const onFillQuitionnaireDone = () => {
     setCanCallApi(false);
-    updateFillQuitionnaireMsgIntoDB(messagesRawData, updatedList => {
+    updateFillQuitionnaireMsgIntoDB(messagesRawData, (updatedList: any) => {
       const newMsgsList = configureMsgsFillQuitionnairePress(updatedList);
       chatContextData.setMessagesListContext(newMsgsList);
       setMessagesData(newMsgsList);
@@ -447,7 +462,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     }, 3000);
   };
 
-  const onFillQuestionnairePress = (item: any) => {
+  const onFillQuestionnairePress = () => {
     authContextData?.setQuestionnaire(null);
     analytics.trackSelectOptionOnGetStartedMessageOnGeneralAssistantChannelScreen(
       MixpanelData.fill_out_questionnaire,
@@ -459,11 +474,10 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
 
   const onMayBeLaterPress = (item: any) => {
     // Shelving this method as Alex requested to keep buttons
-    // updateMayBeLaterMsgIntoDB commenting as discussion 06 Feb
     analytics.trackSelectOptionOnGetStartedMessageOnGeneralAssistantChannelScreen(
       MixpanelData.may_be_later,
     );
-    updateFillQuitionnaireMsgIntoDB(messagesRawData, updatedList => {
+    updateFillQuitionnaireMsgIntoDB(messagesRawData, (updatedList: any) => {
       const newMsgsList = configureMsgsOnMaybePress(updatedList);
       setMessagesData(newMsgsList);
       chatContextData.setMessagesListContext(newMsgsList);
@@ -490,7 +504,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
 
   const goToWhatsappTutorial = () => {
     navigate(SCREEN_NAME.WhatsAppTutorialScreen, {
-      isFromChat: true,
+      isForSync: false,
     });
   };
 
@@ -575,7 +589,7 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     }, 100);
   };
 
-  const updateTracker = (apiResponse: any, msgText: string) => {
+  const updateTracker = (msgText: string) => {
     switch (receiverData?.type) {
       case ChatType.AssistantRelationship:
         analytics.trackSendMessageOnRelationshipAssistantChannelScreen(
@@ -600,8 +614,8 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
       },
       headers: getApiconfig,
     };
-    sendMessageToServer(requestBody).then(data => {
-      updateTracker(data, msgText);
+    sendMessageToServer(requestBody).then(() => {
+      updateTracker(msgText);
     });
   };
 
@@ -616,18 +630,13 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
         );
       }
       navigate(SCREEN_NAME.WhatsAppTutorialScreen, {
-        isFromAnalysis: true,
         isForSync: true,
-        relationShipData: relationShipData,
       });
     } else {
       const inputs = relationShipData?.inputs;
       if (inputs?.length > 0) {
         analytics.trackTouchUpdateYourIMessageConversationMenuOnPlusButtonMenuSheetOnRelationshipAssistantChannelScreen(
           'iMessage',
-          relationShipData?.name,
-          MixpanelData[inputs[0].objectPronoun],
-          MixpanelData[relationShipData?.connection] || '',
         );
       }
       navigate(SCREEN_NAME.IMessageSyncLoadingScreen, {
@@ -647,7 +656,9 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     });
   };
 
-  const updateReceiverDataIfEdited = newReceiverData => {
+  const updateReceiverDataIfEdited = (
+    newReceiverData: ChatReceiverDataType,
+  ) => {
     setParams({receiverData: {...receiverData, about: newReceiverData?.name}});
   };
 
@@ -667,7 +678,6 @@ export const useChatMessages = (screenProps: ChatScreenScreenProps) => {
     onIMessagePress,
     onNewAnalysisPress,
     userData: authContextData?.userData,
-    listViewRef,
     onMayBeLaterPress,
     sendMessage,
     onUploadConvPress,

@@ -127,7 +127,7 @@ const useNotificationsService = () => {
     try {
       await notifee.displayNotification({
         id: '123',
-        title: 'RNCodeForClientReview',
+        title: 'Amori',
         body: notification?.userInfo?.aps?.alert?.body,
         data: {
           userInfo: notification?.userInfo,

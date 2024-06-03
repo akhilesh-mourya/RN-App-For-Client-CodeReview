@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {
   BottomView,
   ButtonNextArrowActive,
@@ -15,9 +15,6 @@ import UserSelectionItem from '../../../../../components/molecule/userSelectionI
 import AMPrimaryButton from '../../../../../components/button/AMPrimaryButton';
 import {PrimaryButtonType} from '../../../../../constants/enums';
 import {useAnalytics} from '../../../../../services/analytics';
-import useAuth from '../../../../../hooks/context/useAuth';
-import {extractNameDetails} from '../../../../../utility';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 interface RelationshipStepProps {
   updateStep?: Function;
@@ -41,14 +38,12 @@ const UserSelectorScreen: FC<RelationshipStepProps> = React.memo(props => {
     updateStep = () => {},
     senders = [],
     isNamesDiff = false,
-    isFromWhatsAppUpload = false,
     isUpdateFlow = false,
     updateExistingRelationship = () => {},
     isFromUpdateAndDiffConv = false,
   } = props;
 
   const analytics = useAnalytics();
-  const {authContextData} = useAuth();
 
   const getIsButtonDisabled = () => {
     return selectedOptionForUserSelection === -1;

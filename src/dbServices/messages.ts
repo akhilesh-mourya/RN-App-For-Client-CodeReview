@@ -279,11 +279,11 @@ export const getLastMessagesOfChannelFromDB = async (channelId: string) => {
     try {
       const dbRef = global.dbLocalRef;
       if (dbRef) {
-        dbRef.transaction(tx => {
+        dbRef.transaction((tx: any) => {
           tx.executeSql(
             query_create,
             [],
-            (tx, resultSet) => {
+            (_, resultSet: any) => {
               const msgsList = [];
               var length = resultSet.rows.length;
               for (var i = 0; i < length; i++) {
@@ -291,16 +291,16 @@ export const getLastMessagesOfChannelFromDB = async (channelId: string) => {
               }
               resolve(msgsList);
             },
-            error => {
+            (error: any) => {
               console.log('List user error', error);
-              reject({error: error});
+              resolve([]);
             },
           );
         });
       }
     } catch (err) {
       console.log('LastMessages Data Error:', err);
-      reject({error: err});
+      reject([]);
     }
   });
 };

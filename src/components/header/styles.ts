@@ -12,7 +12,7 @@ import {
 } from '../../assets/svg/chat';
 import {TextPropsType, ViewPropsType} from '../../../@types/styledComponents';
 import AMButton from '../button/AMButton';
-import {RNCodeForClientReview_LOGO_SVG} from '../../assets/svg';
+import {AMORI_LOGO_SVG} from '../../assets/svg';
 import {IS_IOS_PLATFORM} from '../../constants/appContants';
 
 export const MainContainer = styled.View.attrs<ViewPropsType>(() => ({
@@ -67,7 +67,7 @@ export const AvatarImg = styled.Image.attrs(() => ({
 `;
 
 export const StarIcon = styled(SvgXml).attrs<any>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+  xml: AMORI_LOGO_SVG,
   height: scale(20),
   width: scale(18.2),
 }))`

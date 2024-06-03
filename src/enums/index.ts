@@ -149,7 +149,7 @@ export enum SCREEN_NAME {
   RelationshipProfileScreen = 'RelationshipProfileScreen',
   EditRelationshipNameScreen = 'EditRelationshipNameScreen',
   FillWhatsAppQuitionnarireForAnalysisScreen = 'FillWhatsAppQuitionnarireForAnalysisScreen',
-  IMessageSyncLoadingScreen = 'IMessageSyncLoadingScreen',
+  IMessageSyncLoadingScreen = 'iMessageSyncLoadingScreen',
   WhatsappSyncdSuccessScreen = 'WhatsappSyncdSuccessScreen',
   WaitlistScreen = 'WaitlistScreen',
 }
@@ -369,7 +369,7 @@ export enum DeleteReason {
   NoLongerDating = 'no_longer_dating',
   Privacyconcerns = 'privacy_concerns',
   CostTooMuch = 'cost_too_much',
-  DontLikeRNCodeForClientReview = 'dont_like_RNCodeForClientReview',
+  DontLikeAmori = 'dont_like_amori',
   Others = 'custom',
 }
 

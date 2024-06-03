@@ -11,7 +11,7 @@ import {
 } from '../../../../@types/styledComponents';
 import {FontFamily} from 'custom_enums';
 import {SvgXml} from 'react-native-svg';
-import {RNCodeForClientReview_LOGO_SVG, DOT_SVG_ICON} from '../../../assets/svg';
+import {AMORI_LOGO_SVG, DOT_SVG_ICON} from '../../../assets/svg';
 import AMButton from '../../button/AMButton';
 import { IS_IOS_PLATFORM } from '../../../constants/appContants';
 
@@ -68,7 +68,7 @@ export const DetailContainer = styled.View.attrs<ViewPropsType>(() => ({
 `;
 
 export const StarIcon = styled(SvgXml).attrs<any>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+  xml: AMORI_LOGO_SVG,
   height: verticalScale(20),
   width: scale(18.2),
 }))`

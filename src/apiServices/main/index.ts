@@ -1,12 +1,10 @@
 /**
- * RNCodeForClientReview Api services for @Assistant flow
+ * Amori Api services for @Assistant flow
  */
 import {Config} from 'react-native-config';
 import axios from 'axios';
 import {
-  ApiConfig,
   CreateAnalysysReqData,
-  CreateUserReqData,
   RelationshipReqData,
 } from '../../../@types/common';
 import {
@@ -19,16 +17,12 @@ import {
   POST_RELATIONSHIPS,
   UPLOAD_IMESSAGE_INFO,
   UPLOAD_WHATSAPP_CHAT,
-  getAnalysisListQuery,
   getCreateAnalysysQuery,
   updateRelationshipsConstant,
 } from '../../constants/apiConstants';
 import api from '../index';
 
-export const getAssistantByIdData = async (
-  getApiconfig: ApiConfig,
-  assitantId: number,
-) => {
+export const getAssistantByIdData = async (assitantId: number) => {
   const data = await api.get(`${GET_ASSISTANT_BY_ID}${assitantId}`);
   return data?.data;
 };
@@ -43,10 +37,7 @@ export const getRelationshipInfo = async (relationshipId: string) => {
   return data;
 };
 
-export const createRelationship = async (
-  reqData: RelationshipReqData,
-  getApiconfig: ApiConfig,
-) => {
+export const createRelationship = async (reqData: RelationshipReqData) => {
   const response = await api.post(`${POST_RELATIONSHIPS}`, reqData);
   if (response?.status === 201 || response?.status === 200) {
     return response?.data;
@@ -55,13 +46,11 @@ export const createRelationship = async (
   }
 };
 
-export const updateRelationship = async (
-  reqData: RelationshipReqData,
-) => {
+export const updateRelationship = async (reqData: RelationshipReqData) => {
   const relationshipId = reqData?.relationshipId;
   delete reqData.relationshipId;
   const response = await api.post(
-    `${updateRelationshipsConstant(relationshipId)}`,
+    `${updateRelationshipsConstant(relationshipId || '')}`,
     reqData,
   );
   if ([200, 201, 204]?.includes(response?.status)) {
@@ -71,10 +60,7 @@ export const updateRelationship = async (
   }
 };
 
-export const editRelationship = async (
-  reqData: RelationshipReqData,
-  getApiconfig?: ApiConfig,
-) => {
+export const editRelationship = async (reqData: RelationshipReqData) => {
   const relationshipId = reqData?.relationshipId;
   delete reqData.relationshipId;
   const response = await api.patch(
@@ -110,9 +96,7 @@ export const deleteRelationship = async (
   }
 };
 
-export const uploadWhatsappChat = async (
-  reqData: any,
-) => {
+export const uploadWhatsappChat = async (reqData: any) => {
   const response = await api.post(`${UPLOAD_WHATSAPP_CHAT}`, reqData);
   if (response?.status === 201 || response?.status === 200) {
     return response?.data;
@@ -121,26 +105,27 @@ export const uploadWhatsappChat = async (
   }
 };
 
-export const updateWhatsappChat = async (
-  reqData: any,
-) => {
+export const updateWhatsappChat = async (reqData: any) => {
   const response = await api.post(`${UPLOAD_WHATSAPP_CHAT}`, reqData);
   if (response?.status === 201 || response?.status === 200) {
     return response?.data;
   } else {
-   return response;
+    return response;
   }
 };
 
-export const getChannelsList = async (getApiconfig: ApiConfig) => {
+export const getChannelsList = async () => {
   const {data} = await api.get(`${GET_CHANNELS}`);
   return data;
 };
 
-export const createAnalysysCall = async (reqData: CreateAnalysysReqData) => {
+export const createAnalysysCall = async (request: {
+  reqData: CreateAnalysysReqData;
+  relationshipId: string;
+}) => {
   const response = await api.post(
-    `${getCreateAnalysysQuery(reqData?.relationshipId)}`,
-    reqData?.reqData,
+    `${getCreateAnalysysQuery(request?.relationshipId || '')}`,
+    request?.reqData,
   );
   if (response?.status === 201 || response?.status === 200) {
     return response?.data;

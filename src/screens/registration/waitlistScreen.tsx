@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {
   WaitlistSubContainer,
-  RNCodeForClientReviewSVGLogo,
+  AmoriSVGLogo,
   WaitlistTitle,
   WaitlistDescription,
   FullFlexView,
@@ -31,7 +31,7 @@ const WaitlistScreen: FC<{}> = () => {
 
   const renderBodyContent = () => (
     <FullFlexView>
-      <RNCodeForClientReviewSVGLogo />
+      <AmoriSVGLogo />
       <WaitlistTitle>{t('Matchmaking_Title')}</WaitlistTitle>
       <WaitlistDescription>{t('Matchmaking_Des')}</WaitlistDescription>
     </FullFlexView>

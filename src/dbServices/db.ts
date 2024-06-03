@@ -10,7 +10,7 @@ import {
 import {tablesList} from '../constants/sqliteQueryConstants';
 export const openDataBase = () => {
   var dbRef = SQLite?.openDatabase({
-    name: 'RNCodeForClientReviewMobileDB',
+    name: 'AmoriMobileDB',
     location: 'default',
   });
   return dbRef;

@@ -1,5 +1,5 @@
 /***
-RNCodeForClientReview - NAVIGATION STACK CLASS
+Amori - NAVIGATION STACK CLASS
 ***/
 
 import React, {FC} from 'react';

@@ -26,6 +26,8 @@ export type CoachDataProps = {
   name: string;
   subTitle: string;
   time: string;
+  subject: string;
+  type: string;
 };
 
 export type QuestionnaireProps = {
@@ -536,7 +538,7 @@ export const Delete_Reason_List = [
     id: 5,
     emojiData: i18next.t('Delete_Reason_Emoji_5'),
     reasonData: i18next.t('Delete_Reason_5'),
-    value: DeleteReason.DontLikeRNCodeForClientReview,
+    value: DeleteReason.DontLikeAmori,
   },
   {
     id: 6,

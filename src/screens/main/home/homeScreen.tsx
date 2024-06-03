@@ -33,7 +33,7 @@ import {PrimaryButtonType} from '../../../constants/enums';
 import MaskedView from '../../chat/fillQuestionnaire/linearGradient/maskedView';
 import {HomeList as MaskedElement} from '../../chat/fillQuestionnaire/linearGradient/maskedElement';
 import {useAnalytics} from '../../../services/analytics';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeScreen: FC<{}> = () => {
   const [progress] = useState(0);
@@ -57,7 +57,7 @@ const HomeScreen: FC<{}> = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && analytics) {
       analytics.trackViewHomeScreen();
     }
   }, [analytics, isFocused]);
@@ -118,11 +118,8 @@ const HomeScreen: FC<{}> = () => {
           <AMPrimaryButton
             buttonType={PrimaryButtonType.FullButton}
             label={t('Upload_Conversation')}
-            labelSize={16}
             onPress={onUploadConvPress}
-            isDisabled={false}
             leftIcon={<UploadConversationIcon />}
-            height={44}
           />
         </UploadConversationLayout>
       </FlatListContainer>

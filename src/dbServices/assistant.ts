@@ -17,7 +17,7 @@ export const createAssistantTable = async (dbRef: any = null) => {
 
 const paramsData = [
   '1',
-  'https://dev-RNCodeForClientReview-assets.s3.amazonaws.com/assistants/grace.jpg',
+  'https://dev-amori-assets.s3.amazonaws.com/assistants/grace.jpg',
   'Description',
   'Its Intro',
   'Name',

@@ -18,8 +18,8 @@ import {PrimaryButtonType} from '../../../constants/enums';
 import i18next from 'i18next';
 import {UPLOAD_BUTTON_ICON} from '../../../assets/svg/home';
 import {
-  RNCodeForClientReview_LOGO_BIG,
-  RNCodeForClientReview_LOGO_SVG,
+  AMORI_LOGO_BIG,
+  AMORI_LOGO_SVG,
   BUTTON_NEXT_ARROW_ACTIVE,
   SHARE_UOLOAD_ICON,
 } from '../../../assets/svg';
@@ -77,7 +77,7 @@ export const WhatsappUploadImage = styled.Image.attrs<ViewPropsType>(props => ({
   ${color} ${layout} ${space};
 `;
 
-export const IMessageRNCodeForClientReviewLogoContainer = styled.View.attrs<any>(props => ({
+export const IMessageAMoriLogoContainer = styled.View.attrs<any>(props => ({
   mt: verticalScale(40),
   height: scale(120),
   width: scale(120),
@@ -96,8 +96,8 @@ export const IMessageRNCodeForClientReviewLogoContainer = styled.View.attrs<any>
   ${border}
 `;
 
-export const RNCodeForClientReviewLogoImage = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+export const AmoriLogoImage = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
+  xml: AMORI_LOGO_SVG,
   height: verticalScale(75.5),
   width: scale(67.5),
 }))`
@@ -107,8 +107,8 @@ export const RNCodeForClientReviewLogoImage = styled(SvgXml).attrs<SVGXMLPropsTy
   ${layout}
 `;
 
-export const RNCodeForClientReviewLogo = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
-  xml: RNCodeForClientReview_LOGO_BIG,
+export const AmoriLogo = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
+  xml: AMORI_LOGO_BIG,
   mt: verticalScale(40),
   mb: verticalScale(32),
 }))`

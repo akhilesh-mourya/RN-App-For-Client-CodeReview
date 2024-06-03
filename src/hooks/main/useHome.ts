@@ -1,20 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useQuery} from 'react-query';
-import useGetApiHeaders from '../apiService/useGetApiHeaders';
 import useAuth from '../context/useAuth';
 import {
   getAssistantByIdData,
   getChannelsList,
   getRelationshipsData,
 } from '../../apiServices/main';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useCallback} from 'react';
 import {ActionSheetRef} from 'react-native-actions-sheet';
-import {
-  NavigationProp,
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SCREEN_NAME, UploadTypeEnum} from '../../enums';
 import useChat from '../context/useChat';
 import {CoachDataProps} from '../../constants/mockData';
@@ -31,7 +25,7 @@ import {
   getSectionMessages,
   readMessagesDataFromDB,
 } from '../../utility/chatUtility';
-import {ChatMessagesType} from '../../types';
+import {ChatMessagesType, NavigationProps} from '../../types';
 import {useLoader} from '../loader/useLoader';
 import {getCurrentAIMatchmaking} from '../../apiServices/aiMatchmaking';
 import {
@@ -39,13 +33,12 @@ import {
   resetToWaitlistRoute,
 } from '../../navigation/navigationHelper';
 import {useAnalytics} from '../../services/analytics';
-import {MixpanelData} from '../../constants/enums';
 import {checkAndGetUser} from '../../apiServices/registration';
 import {useNotification} from '../../services/notification/hooks/useNotification';
 
 export const useHome = () => {
   const bottomSheetRef = useRef<ActionSheetRef>(null);
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NavigationProps>();
   const {authContextData} = useAuth();
   const {
     setMyRelationshipsList,
@@ -56,12 +49,11 @@ export const useHome = () => {
   const {hasRefreshedTheToken, resetSession, refreshAccessToken, userData} =
     authContextData;
   const {chatContextData} = useChat();
-  const {getApiconfig} = useGetApiHeaders();
   const {updateOldErrorUI} = useLoader();
   const [call, setCall] = useState(false);
   const [lastMessageDataForCoach, setLastMessageForCoach] =
     useState<ChatMessagesType | null>(null);
-  const [assistantData, setAssistantData] = useState(false);
+  const [assistantData, setAssistantData] = useState({data: {}});
   const analytics = useAnalytics();
   const notification = useNotification();
   const {data: currentAIMatchmakingData} = useQuery(
@@ -76,7 +68,7 @@ export const useHome = () => {
   );
   const {data: channelsList, refetch: channelRefetch} = useQuery(
     'getChannels',
-    () => getChannelsList(getApiconfig),
+    () => getChannelsList(),
     {
       cacheTime: 3000,
       refetchOnWindowFocus: true,
@@ -84,18 +76,14 @@ export const useHome = () => {
       enabled: authContextData.registrationProgress === 'DONE',
     },
   );
-  global.channelRefetch = channelRefetch;
+
   const {
     refetch: assistantRefetch,
     isLoading: getAssistantLoading,
     data: assistentRawData,
   } = useQuery(
     'getAssistant',
-    () =>
-      getAssistantByIdData(
-        getApiconfig,
-        authContextData?.userData?.assistantId,
-      ),
+    () => getAssistantByIdData(authContextData?.userData?.assistantId || -1),
     {
       enabled:
         authContextData.registrationProgress === 'DONE' &&
@@ -110,17 +98,36 @@ export const useHome = () => {
     data: relationShipsData,
     isLoading: getRelationShipsLoading,
     refetch: relationshipRefetch,
-  } = useQuery('getRelationsShips', () => getRelationshipsData(getApiconfig), {
+  } = useQuery('getRelationsShips', () => getRelationshipsData(), {
     enabled: authContextData.registrationProgress === 'DONE',
   });
 
+  /**
+   * To Show Last Message on Coach Chat
+   */
+  useFocusEffect(
+    React.useCallback(() => {
+      if (
+        authContextData.registrationProgress === 'DONE' &&
+        authContextData.authToken &&
+        authContextData?.userData?.assistantId
+      ) {
+        configureDataOnAssistantLoad(assistentRawData, channelsList);
+        channelRefetch();
+        relationshipRefetch();
+        fetchPersonalities();
+        getUserDataFromServer();
+      }
+    }, [
+      authContextData.registrationProgress,
+      authContextData.userData,
+      channelsList,
+    ]),
+  );
+
   useEffect(() => {
     const process = authContextData?.registrationProgress;
-    if (process !== 'WAITLIST_SCREEN') {
-      updateOldErrorUI(true);
-    } else {
-      updateOldErrorUI(false);
-    }
+    updateOldErrorUI(process !== 'WAITLIST_SCREEN');
   }, []);
 
   useEffect(() => {
@@ -146,56 +153,6 @@ export const useHome = () => {
       assistantRefetch();
     }
   }, [hasRefreshedTheToken]);
-
-  const getUserDataFromServer = async () => {
-    try {
-      const userdata = await checkAndGetUser();
-      const userError = JSON.stringify(userdata);
-      const finalError = JSON.parse(userError);
-      if (finalError?.status >= 400 && finalError?.status < 500) {
-        if (finalError?.status === 401) {
-          const hasTokenRefreshed = refreshAccessToken(userData?.phoneNumber);
-          if (!hasTokenRefreshed) {
-            resetSession();
-            resetRelationshipSession();
-            resetToPhoneNumberRoute();
-          }
-        } else {
-          resetSession();
-          resetRelationshipSession();
-          resetToPhoneNumberRoute();
-        }
-      } else if (
-        userdata?.data?.data?.inWaitlist &&
-        authContextData.registrationProgress === 'DONE'
-      ) {
-        resetToWaitlistRoute();
-      }
-    } catch (error) {}
-  };
-
-  /**
-   * To Show Last Message on Coach Chat
-   */
-  useFocusEffect(
-    React.useCallback(() => {
-      if (
-        authContextData.registrationProgress === 'DONE' &&
-        authContextData.authToken &&
-        authContextData?.userData?.assistantId
-      ) {
-        configureDataOnAssistantLoad(assistentRawData, channelsList);
-        channelRefetch();
-        relationshipRefetch();
-        fetchPersonalities();
-        getUserDataFromServer();
-      }
-    }, [
-      authContextData.registrationProgress,
-      authContextData.userData,
-      channelsList,
-    ]),
-  );
 
   useEffect(() => {
     if (assistentRawData && channelsList) {
@@ -225,12 +182,39 @@ export const useHome = () => {
     }
   }, [relationShipsData, channelsList]);
 
+  const getUserDataFromServer = useCallback(async () => {
+    try {
+      const userdata: any = await checkAndGetUser();
+      const userError = JSON.stringify(userdata);
+      const finalError = JSON.parse(userError);
+      if (finalError?.status >= 400 && finalError?.status < 500) {
+        if (finalError?.status === 401) {
+          const hasTokenRefreshed = refreshAccessToken(userData?.phoneNumber);
+          if (!hasTokenRefreshed) {
+            resetSession();
+            resetRelationshipSession();
+            resetToPhoneNumberRoute();
+          }
+        } else {
+          resetSession();
+          resetRelationshipSession();
+          resetToPhoneNumberRoute();
+        }
+      } else if (
+        userdata?.data?.data?.inWaitlist &&
+        authContextData.registrationProgress === 'DONE'
+      ) {
+        resetToWaitlistRoute();
+      }
+    } catch (error) {}
+  }, []);
+
   const configureDataOnAssistantLoad = async (
-    assistentRawData: any,
+    _assistentRawData: any,
     _channelsList: any,
   ) => {
-    if (assistentRawData && channelsList?.data) {
-      const {data} = assistentRawData;
+    if (_assistentRawData && channelsList?.data) {
+      const {data} = _assistentRawData;
       authContextData?.setMyCoachData(data);
       const channelData = getFilteredCoachChannel(channelsList?.data);
       const updatedCoachMsg: any = checkCoachLastMesageRead(
@@ -238,119 +222,125 @@ export const useHome = () => {
         authContextData?.userData?.id,
       );
       setLastMessageForCoach(updatedCoachMsg);
-      setAssistantData(assistentRawData);
-      notification.setAssistantData(assistentRawData?.data);
+      setAssistantData(_assistentRawData);
+      notification.setAssistantData(_assistentRawData?.data);
     }
   };
 
-  const onWhatsAppPress = () => {
+  const onWhatsAppPress = useCallback(() => {
     bottomSheetRef?.current?.hide();
     analytics.trackTouchAnalyzeWhatsappConversationMenuOnUploadConversationSheetOnHomeScreen();
     setTimeout(() => {
-      navigation?.navigate(SCREEN_NAME.WhatsAppTutorialScreen);
+      navigation?.navigate(SCREEN_NAME.WhatsAppTutorialScreen, {
+        isForSync: false,
+      });
     }, 100);
-  };
+  }, []);
 
-  const onIMessagePress = () => {
+  const onIMessagePress = useCallback(() => {
     bottomSheetRef?.current?.hide();
     analytics.trackTouchAnalyzeIMessageConversationMenuOnUploadConversationSheetOnHomeScreen();
     setTimeout(() => {
       navigation?.navigate(SCREEN_NAME.IMessageTutorialScreen);
     }, 100);
-  };
+  }, []);
 
-  const getSubjectThroughRelationship = (item: any) => {
+  const getSubjectThroughRelationship = useCallback((item: any) => {
     let subject = '';
     const inputs = item?.inputs;
     if (inputs?.length > 0) {
       subject = inputs[0].subject;
     }
     return subject;
-  };
+  }, []);
 
-  const onCoachPress = async (coach: CoachDataProps) => {
-    analytics.trackTouchGeneralAssistantCardOnHomeScreen(
-      coach?.name.toLowerCase() || '',
-    );
+  const onCoachPress = useCallback(
+    async (coach: CoachDataProps) => {
+      analytics.trackTouchGeneralAssistantCardOnHomeScreen(
+        coach?.name.toLowerCase() || '',
+      );
 
-    const channelData = getFilteredCoachChannel(chatContextData?.channelsList);
-    if (channelData) {
-      const result = await readMessagesDataFromDB(channelData?.id);
-      const updatedMessages = configureChatMessages(result, {
-        ...coach,
-        type: channelData?.type,
-        about: '',
-      });
-      const sectionListData = await getSectionMessages(updatedMessages);
-      navigation.navigate(SCREEN_NAME.ChatScreen, {
-        receiverData: {
+      const channelData = getFilteredCoachChannel(
+        chatContextData?.channelsList,
+      );
+      if (channelData) {
+        const result = await readMessagesDataFromDB(channelData?.id);
+        const updatedMessages = configureChatMessages(result, {
           ...coach,
           type: channelData?.type,
           about: '',
-          subject: '',
-        },
-        channelData: channelData,
-        result,
-        sectionListData,
-      });
-    }
-  };
+        });
+        const sectionListData = await getSectionMessages(updatedMessages);
+        navigation.navigate(SCREEN_NAME.ChatScreen, {
+          receiverData: {
+            ...coach,
+            type: channelData?.type,
+            about: '',
+            subject: '',
+          },
+          channelData: channelData,
+          result,
+          sectionListData,
+        });
+      }
+    },
+    [chatContextData?.channelsList],
+  );
 
-  const onRelationshipItemPress = async (item: any, coach: CoachDataProps) => {
-    if (item?.inputs?.length > 0) {
-      analytics.trackTouchRelationshipCardOnHomeScreen(
-        item.id,
-        item?.channel?.id || '',
-        item?.inputs[0]?.source || '',
-        item?.name || '',
-        MixpanelData[item?.inputs[0]?.objectPronoun] || '',
-        MixpanelData[item?.connection] || '',
-      );
-    }
+  const onRelationshipItemPress = useCallback(
+    async (item: any, coach: CoachDataProps) => {
+      if (item?.inputs?.length > 0) {
+        analytics.trackTouchRelationshipCardOnHomeScreen(item.id);
+      }
 
-    const result = await readMessagesDataFromDB(item?.channel?.id);
-    const updatedMessages = configureChatMessages(result, {
-      ...coach,
-      type: item?.channel?.type,
-      about: item?.name,
-    });
-    const sectionListData = await getSectionMessages(updatedMessages);
-    navigation.navigate(SCREEN_NAME.ChatScreen, {
-      receiverData: {
+      const result = await readMessagesDataFromDB(item?.channel?.id);
+      const updatedMessages = configureChatMessages(result, {
         ...coach,
         type: item?.channel?.type,
         about: item?.name,
-        subject: getSubjectThroughRelationship(item),
-      },
-      channelData: item?.channel,
-      result,
-      sectionListData,
-      isIMessageUploadType:
-        item?.inputs[0]?.source === UploadTypeEnum?.IMessage,
-      relationShipData: item,
-    });
-  };
+      });
+      const sectionListData = await getSectionMessages(updatedMessages);
+      console.log('navigate oon coach');
+      navigation.navigate(SCREEN_NAME.ChatScreen, {
+        receiverData: {
+          ...coach,
+          type: item?.channel?.type,
+          about: item?.name,
+          subject: getSubjectThroughRelationship(item),
+        },
+        channelData: item?.channel,
+        result,
+        sectionListData,
+        isIMessageUploadType:
+          item?.inputs[0]?.source === UploadTypeEnum?.IMessage,
+        relationShipData: item,
+      });
+    },
+    [],
+  );
 
-  const isMyRelationshipBoxShown = () => {
+  const isMyRelationshipBoxShown = useCallback(() => {
     return authContextData?.userData?.gender ? false : true;
-  };
+  }, []);
 
-  const onUploadConvPress = () => {
+  const onUploadConvPress = useCallback(() => {
     analytics.trackTouchUploadConversationButtonOnHomeScreen();
 
     switch (Platform.OS) {
       case 'android':
-        navigation?.navigate(SCREEN_NAME.WhatsAppTutorialScreen);
+        navigation?.navigate(SCREEN_NAME.WhatsAppTutorialScreen, {
+          isForSync: false,
+        });
         break;
       case 'ios':
         bottomSheetRef?.current?.show();
         break;
     }
-  };
+  }, []);
 
-  const onFillQuestionnairePress = () => {
+  const onFillQuestionnairePress = useCallback(() => {
     navigation?.navigate(SCREEN_NAME.FillQuestionnaireScreen); //MyRelationshipProfileScreen
-  };
+  }, []);
 
   return {
     bottomSheetRef,

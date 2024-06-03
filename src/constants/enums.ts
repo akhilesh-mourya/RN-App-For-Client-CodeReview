@@ -43,7 +43,7 @@ export enum MixpanelData {
   no_longer_dating = 'no longer dating',
   privacy_concerns = 'privacy concerns',
   cost_too_much = 'cost too much',
-  dont_like_RNCodeForClientReview = "don't like RNCodeForClientReview",
+  dont_like_amori = "don't like amori",
   he = 'he/him',
   she = 'she/her',
   they = 'they/them',

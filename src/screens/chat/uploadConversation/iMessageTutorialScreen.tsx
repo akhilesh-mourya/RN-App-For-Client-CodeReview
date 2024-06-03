@@ -9,7 +9,7 @@ import {
   StepDesLabel,
   Divider,
   WhatsappUploadImage,
-  RNCodeForClientReviewLogoImage,
+  AmoriLogoImage,
   MacShareContainer,
   MacLinkLabel,
   ShareButton,
@@ -18,7 +18,7 @@ import {
   StepSubDesLabel,
   LabelContainer,
   ScanQRButton,
-  IMessageRNCodeForClientReviewLogoContainer,
+  IMessageAMoriLogoContainer,
   StepOneSubDesLabel,
   EmptyIMessageView,
   StepOneSubDesLabelInner,
@@ -124,9 +124,9 @@ const IMessageTutorialScreen: FC<{}> = () => {
         <AMHeaderArrowBackButton />
         <ScrollContainer>
           <HeaderLabel>{t('IMessage_Upload_Header')}</HeaderLabel>
-          <IMessageRNCodeForClientReviewLogoContainer>
-            <RNCodeForClientReviewLogoImage />
-          </IMessageRNCodeForClientReviewLogoContainer>
+          <IMessageAMoriLogoContainer>
+            <AmoriLogoImage />
+          </IMessageAMoriLogoContainer>
           {renderMainView()}
           <EmptyIMessageView />
           {/* {renderBottomButton()} */}

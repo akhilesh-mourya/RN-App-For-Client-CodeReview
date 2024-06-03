@@ -26,7 +26,7 @@ import i18next from 'i18next';
 interface RelationshipItemProps {
   item: any;
   onItemPress: any;
-  coachData: AssistantDataType;
+  coachData: AssistantDataType | {};
 }
 
 const RelationshipItem: FC<RelationshipItemProps> = React.memo(props => {

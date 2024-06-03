@@ -19,9 +19,8 @@ import {useWindowDimensions} from 'react-native';
 import Questions4A from './subComponents/questions4A';
 import QuitQuestionnairePopUp from '../../../components/quitQuestionnairePopUp';
 import QuestionsPronounScreen from './subComponents/questionsPronoun';
-import {FillWhatsappQuitoinnaireProps} from '../../../types';
 
-const FillQuestionnaireScreen: FC<FillWhatsappQuitoinnaireProps> = () => {
+const FillQuestionnaireScreen: FC<{}> = () => {
   const {
     step,
     progressVal,

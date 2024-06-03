@@ -18,7 +18,7 @@ import {ResultStepThree} from './resultStepThree';
 import {ResultStepFive} from './resultStepFive';
 import {useAnalytics} from '../../services/analytics';
 import {AMPrimaryButtonNew} from '../button/AMPrimaryButton';
-import {MixpanelData, PrimaryButtonType} from '../../constants/enums';
+import {PrimaryButtonType} from '../../constants/enums';
 import theme from '../../theme';
 import {getRelationshipSectionDetail} from '../../helpers/commonFunctions';
 
@@ -225,13 +225,10 @@ export const AttachmentStylesResultModal: FC<ModalProps> = React.memo(props => {
       <BottomView>
         <AMPrimaryButtonNew
           label="Share"
-          labelSize={14}
-          height={32}
           leftIcon={<ShareIcon />}
           isDisabled={false}
           buttonType={PrimaryButtonType.ContentWidthButton}
           horizontalPadding={16}
-          labelLineHeight={19.46}
           bgColor={theme.colors.youLabelColor}
           onPress={captureScreen}
         />

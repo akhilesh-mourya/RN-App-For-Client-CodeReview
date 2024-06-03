@@ -26,7 +26,7 @@ import {
   MATCHMAKING_SCREEN_IMAGE,
   MATCHMAKING_SUCCESS_SCREEN_IMAGE,
 } from '../../../constants/imageConstants';
-import {RNCodeForClientReview_LOGO_SVG} from '../../../assets/svg';
+import {AMORI_LOGO_SVG} from '../../../assets/svg';
 const {StatusBarManager} = NativeModules;
 
 export const ScrollContainer = styled.ScrollView.attrs<any>(() => ({
@@ -246,7 +246,6 @@ export const ReferFriendButton = styled(AMPrimaryButton).attrs<any>(() => ({
   label: i18next.t('Invite_Friends'),
   isDisabled: false,
   mTop: verticalScale(45),
-  labelLineHeight: 27,
   height: 47,
 }))`
   ${color}
@@ -299,7 +298,7 @@ export const ChatWithBtnLabel = styled.Text.attrs<TextPropsType>(props => ({
 `;
 
 export const MatchMakingIcon = styled(SvgXml).attrs<SVGXMLPropsType>(() => ({
-  xml: RNCodeForClientReview_LOGO_SVG,
+  xml: AMORI_LOGO_SVG,
   height: scale(80),
   width: scale(72),
 }))`
